@@ -2,20 +2,25 @@
 <head>
 <style>
 body {
-  margin:0;
-  padding:0;
   height: 100%;
   width: 100%;
   font-size: 32px;
+  font-family: Noto Sans CJK JP, arial;
   overflow:hidden;
   user-drag:none;
 }
+* {
+  margin:0;
+  padding:0;
+}
 figure {
+  position:absolute;
   border: 2px solid #333;
   box-sizing: border-box;
   border-radius:10px;
 }
 figcaption {
+  position:absolute;
   border:none;
   font-size:32px;
   color: #333;
@@ -27,6 +32,8 @@ figcaption {
 </style>
 </head>
 <body>
+
+<figure id=snappos></figure>
 
 <script>
 let mousedown
@@ -44,7 +51,12 @@ document.body.addEventListener('mousedown', (e) => {
   e.preventDefault()
 
   mousedown = [e.clientX, e.clientY]
+})
 
+document.body.addEventListener('mousemove', (e) => {
+  el = document.getElementById('snappos')
+
+  ;[el.style.left, el.style.top] = snap([e.clientX, e.clientY])
 })
 
 document.body.addEventListener('mouseup', (e) => {
@@ -58,7 +70,6 @@ document.body.addEventListener('mouseup', (e) => {
     let input = document.createElement('figcaption')
     input.style.left = snap(e.clientX)
     input.style.top = snap(e.clientY)
-    input.style.position = 'absolute'
     input.contentEditable = 'true'
     
     document.body.append(input)
@@ -70,7 +81,6 @@ document.body.addEventListener('mouseup', (e) => {
     ;[box.style.left, box.style.top] = snap(mousedown)
     let size = [e.clientX, e.clientY].map((p, i) => Math.abs(p - mousedown[i]))  
     ;[box.style.width, box.style.height] = snap(size)
-    box.style.position = 'absolute'
     
     document.body.prepend(box)
   }
