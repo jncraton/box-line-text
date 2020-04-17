@@ -70,7 +70,10 @@ document.body.addEventListener('mouseup', (e) => {
   } else {
     let box = document.createElement('figure')
 
-    ;[box.style.left, box.style.top] = snap(mousedown)
+    ;[box.style.left, box.style.top] = snap([
+      Math.min(mousedown[0], e.clientX),
+      Math.min(mousedown[1], e.clientY)
+    ])
     let size = [e.clientX, e.clientY].map((p, i) => Math.abs(p - mousedown[i]))  
     ;[box.style.width, box.style.height] = snap(size)
     
