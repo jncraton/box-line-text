@@ -62,6 +62,19 @@ function createCaption(x, y) {
     input.focus()
 }
 
+function createBox(p1, p2) {
+    let box = document.createElement('figure')
+
+    ;[box.style.left, box.style.top] = snap([
+      Math.min(p1[0], p2[0]),
+      Math.min(p1[1], p2[1])
+    ])
+    let size = p1.map((s, i) => Math.abs(s - p2[i]))  
+    ;[box.style.width, box.style.height] = snap(size)
+    
+    document.body.prepend(box)
+}
+
 document.body.addEventListener('mouseup', (e) => {
   e.preventDefault()
 
@@ -72,16 +85,7 @@ document.body.addEventListener('mouseup', (e) => {
   if ([e.clientX, e.clientY].every((p, i) => Math.abs(p - mousedown[i]) < 50 )) {
     createCaption(e.clientX, e.clientY)
   } else {
-    let box = document.createElement('figure')
-
-    ;[box.style.left, box.style.top] = snap([
-      Math.min(mousedown[0], e.clientX),
-      Math.min(mousedown[1], e.clientY)
-    ])
-    let size = [e.clientX, e.clientY].map((p, i) => Math.abs(p - mousedown[i]))  
-    ;[box.style.width, box.style.height] = snap(size)
-    
-    document.body.prepend(box)
+    createBox([e.clientX, e.clientY], mousedown)
   }
 })
 </script>
