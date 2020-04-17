@@ -10,9 +10,10 @@ body {
   overflow:hidden;
   user-drag:none;
 }
-div {
+figure {
   border: 3px solid #ccc;
   box-sizing: border-box;
+  border-radius:10px;
 }
 figcaption {
   border:none;
@@ -63,7 +64,7 @@ document.body.addEventListener('mouseup', (e) => {
 
     input.focus()
   } else {
-    let box = document.createElement('div')
+    let box = document.createElement('figure')
 
     ;[box.style.left, box.style.top] = snap(mousedown)
     let size = [e.clientX, e.clientY].map((p, i) => Math.abs(p - mousedown[i]))  
