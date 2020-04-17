@@ -6,7 +6,7 @@ body {
   padding:0;
   height: 100%;
   width: 100%;
-  font-size: 36px;
+  font-size: 32px;
   overflow:hidden;
   user-drag:none;
 }
@@ -14,9 +14,12 @@ div {
   border: 3px solid #ccc;
   box-sizing: border-box;
 }
-input {
+figcaption {
   border:none;
-  font-size:36px;
+  font-size:32px;
+  padding:0 .5em;
+  line-height:64px;
+  height:64px;
   background-color: rgba(0,0,0,0);
 }
 </style>
@@ -31,7 +34,7 @@ function snap(coords) {
 }
 
 document.body.addEventListener('mousedown', (e) => {
-  if (e.target.tagName.toLowerCase() == 'input') {
+  if (e.target.tagName.toLowerCase() == 'figcaption') {
     mousedown = false
     return false
   }
@@ -45,15 +48,16 @@ document.body.addEventListener('mousedown', (e) => {
 document.body.addEventListener('mouseup', (e) => {
   e.preventDefault()
 
-  if (e.target.tagName.toLowerCase() == 'input' || !mousedown) {
+  if (e.target.tagName.toLowerCase() == 'figcaption' || !mousedown) {
     return false
   }
   
   if ([e.clientX, e.clientY].every((p, i) => Math.abs(p - mousedown[i]) < 50 )) {
-    let input = document.createElement('input')
+    let input = document.createElement('figcaption')
     input.style.left = snap(e.clientX)
     input.style.top = snap(e.clientY)
     input.style.position = 'absolute'
+    input.contentEditable = 'true'
     
     document.body.append(input)
 
