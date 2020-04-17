@@ -64,12 +64,8 @@ function createCaption(p, parent=document.body) {
     return input
 }
 
-function clear() {
-    tmpbox && tmpbox.remove()
-}
-
 function createBox(p1, p2, tmp=false) {
-    clear()
+    tmpbox && tmpbox.remove()
  
     let box = document.createElement('figure')
 
@@ -90,18 +86,15 @@ function createBox(p1, p2, tmp=false) {
 
 document.body.addEventListener('mouseup', (e) => {
   e.preventDefault()
+  tmpbox && tmpbox.remove()
 
   if (!mousedown) return false
 
   let mouseup = [e.clientX, e.clientY]
 
-  console.log(mouseup, mousedown)
-  
   if (mouseup.every((p, i) => Math.abs(p - mousedown[i]) < 64 )) {
-    console.log(e.target.tagName)
     if (e.target.tagName.toLowerCase() == 'figcaption' || !mousedown) {
       mousedown = false
-      clear()
       return false
     }
     
