@@ -31,11 +31,24 @@ function snap(coords) {
 }
 
 document.body.addEventListener('mousedown', (e) => {
-  mousedown = [e.clientX, e.clientY]
   e.preventDefault()
+
+  if (e.target.tagName.toLowerCase() == 'input') {
+    mousedown = false
+    return false
+  }
+
+  mousedown = [e.clientX, e.clientY]
+
 })
 
 document.body.addEventListener('mouseup', (e) => {
+  e.preventDefault()
+
+  if (e.target.tagName.toLowerCase() == 'input' || !mousedown) {
+    return false
+  }
+  
   if ([e.clientX, e.clientY].every((p, i) => Math.abs(p - mousedown[i]) < 50 )) {
     let input = document.createElement('input')
     input.style.left = snap(e.clientX)
@@ -53,10 +66,8 @@ document.body.addEventListener('mouseup', (e) => {
     ;[box.style.width, box.style.height] = snap(size)
     box.style.position = 'absolute'
     
-    document.body.append(box)
+    document.body.prepend(box)
   }
-
-  e.preventDefault()
 })
 </script>
 </body>
