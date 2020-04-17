@@ -51,6 +51,17 @@ document.body.addEventListener('mousedown', (e) => {
   mousedown = [e.clientX, e.clientY]
 })
 
+function createCaption(x, y) {
+    let input = document.createElement('figcaption')
+    input.style.left = snap(x)
+    input.style.top = snap(y)
+    input.contentEditable = 'true'
+    
+    document.body.append(input)
+
+    input.focus()
+}
+
 document.body.addEventListener('mouseup', (e) => {
   e.preventDefault()
 
@@ -59,14 +70,7 @@ document.body.addEventListener('mouseup', (e) => {
   }
   
   if ([e.clientX, e.clientY].every((p, i) => Math.abs(p - mousedown[i]) < 50 )) {
-    let input = document.createElement('figcaption')
-    input.style.left = snap(e.clientX)
-    input.style.top = snap(e.clientY)
-    input.contentEditable = 'true'
-    
-    document.body.append(input)
-
-    input.focus()
+    createCaption(e.clientX, e.clientY)
   } else {
     let box = document.createElement('figure')
 
