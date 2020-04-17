@@ -64,7 +64,13 @@ function createCaption(p, parent=document.body) {
     return input
 }
 
-function createBox(p1, p2) {
+function clear() {
+    tmpbox && tmpbox.remove()
+}
+
+function createBox(p1, p2, tmp=false) {
+    clear()
+ 
     let box = document.createElement('figure')
 
     ;[box.style.left, box.style.top] = snap([
@@ -76,19 +82,29 @@ function createBox(p1, p2) {
     
     document.body.prepend(box)
 
+    if (tmp)
+      tmpbox = box
+
     return box
 }
 
 document.body.addEventListener('mouseup', (e) => {
   e.preventDefault()
 
-  if (e.target.tagName.toLowerCase() == 'figcaption' || !mousedown) {
-    return false
-  }
+  if (!mousedown) return false
 
   let mouseup = [e.clientX, e.clientY]
+
+  console.log(mouseup, mousedown)
   
   if (mouseup.every((p, i) => Math.abs(p - mousedown[i]) < 64 )) {
+    console.log(e.target.tagName)
+    if (e.target.tagName.toLowerCase() == 'figcaption' || !mousedown) {
+      mousedown = false
+      clear()
+      return false
+    }
+    
     createCaption(mouseup)
   } else {
     let box = createBox(mouseup, mousedown)
@@ -99,12 +115,9 @@ document.body.addEventListener('mouseup', (e) => {
 })
 
 document.body.addEventListener('mousemove', (e) => {
-  if (e.target.tagName.toLowerCase() == 'figcaption' || !mousedown) {
-    return false
-  }
+  if (!mousedown) return false
 
-  tmpbox && tmpbox.remove()
-  tmpbox = createBox([e.clientX, e.clientY], mousedown)
+  createBox([e.clientX, e.clientY], mousedown, tmp=true)
 })
 </script>
 </body>
