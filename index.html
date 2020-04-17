@@ -83,7 +83,7 @@ document.body.addEventListener('mouseup', (e) => {
 
   let mouseup = [e.clientX, e.clientY]
   
-  if (mouseup.every((p, i) => Math.abs(p - mousedown[i]) < 50 )) {
+  if (mouseup.every((p, i) => Math.abs(p - mousedown[i]) < 64 )) {
     createCaption(mouseup)
   } else {
     createBox(mouseup, mousedown)
