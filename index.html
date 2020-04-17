@@ -92,7 +92,7 @@ document.body.addEventListener('mouseup', (e) => {
 
   let mouseup = [e.clientX, e.clientY]
 
-  if (mouseup.every((p, i) => Math.abs(p - mousedown[i]) < 64 )) {
+  if (mouseup.every((p, i) => Math.abs(p - mousedown[i]) < 8 )) {
     if (e.target.tagName.toLowerCase() == 'figcaption' || !mousedown) {
       mousedown = false
       return false
