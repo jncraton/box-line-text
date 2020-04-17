@@ -33,8 +33,6 @@ figcaption {
 </head>
 <body>
 
-<figure id=snappos></figure>
-
 <script>
 let mousedown
 
@@ -51,12 +49,6 @@ document.body.addEventListener('mousedown', (e) => {
   e.preventDefault()
 
   mousedown = [e.clientX, e.clientY]
-})
-
-document.body.addEventListener('mousemove', (e) => {
-  el = document.getElementById('snappos')
-
-  ;[el.style.left, el.style.top] = snap([e.clientX, e.clientY])
 })
 
 document.body.addEventListener('mouseup', (e) => {
