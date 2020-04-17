@@ -51,10 +51,9 @@ document.body.addEventListener('mousedown', (e) => {
   mousedown = [e.clientX, e.clientY]
 })
 
-function createCaption(x, y) {
+function createCaption(p) {
     let input = document.createElement('figcaption')
-    input.style.left = snap(x)
-    input.style.top = snap(y)
+    ;[input.style.left, input.style.top] = snap(p)
     input.contentEditable = 'true'
     
     document.body.append(input)
@@ -81,11 +80,13 @@ document.body.addEventListener('mouseup', (e) => {
   if (e.target.tagName.toLowerCase() == 'figcaption' || !mousedown) {
     return false
   }
+
+  let mouseup = [e.clientX, e.clientY]
   
-  if ([e.clientX, e.clientY].every((p, i) => Math.abs(p - mousedown[i]) < 50 )) {
-    createCaption(e.clientX, e.clientY)
+  if (mouseup.every((p, i) => Math.abs(p - mousedown[i]) < 50 )) {
+    createCaption(mouseup)
   } else {
-    createBox([e.clientX, e.clientY], mousedown)
+    createBox(mouseup, mousedown)
   }
 })
 </script>
