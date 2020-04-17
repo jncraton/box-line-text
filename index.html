@@ -1,0 +1,64 @@
+<html>
+<head>
+<style>
+body {
+  margin:0;
+  padding:0;
+  height: 100%;
+  width: 100%;
+  font-size: 36px;
+  overflow:hidden;
+  user-drag:none;
+}
+div {
+  border: 3px solid #ccc;
+}
+input {
+  border:none;
+  font-size:36px;
+  background-color: rgba(0,0,0,0);
+}
+</style>
+</head>
+<body>
+
+<script>
+let mousedown
+
+function snap(coords) {
+  return [coords].flat().map(c => Math.round(c / 64) * 64)
+}
+
+document.body.addEventListener('mousedown', (e) => {
+  mousedown = [e.clientX, e.clientY]
+  e.preventDefault()
+  console.log('mousedown', mousedown)
+})
+
+document.body.addEventListener('mouseup', (e) => {
+  if ([e.clientX, e.clientY].every((p, i) => Math.abs(p - mousedown[i]) < 50 )) {
+    let input = document.createElement('input')
+    input.style.left = snap(e.clientX)
+    input.style.top = snap(e.clientY)
+    input.style.position = 'absolute'
+    
+    document.body.append(input)
+
+    input.focus()
+  } else {
+    let box = document.createElement('div')
+
+    ;[box.style.left, box.style.top] = snap(mousedown)
+    let size = [e.clientX, e.clientY].map((p, i) => Math.abs(p - mousedown[i]))  
+    ;[box.style.width, box.style.height] = snap(size)
+    box.style.position = 'absolute'
+    
+    document.body.append(box)
+  }
+
+  console.log('mouseup', [e.clientX, e.clientY])
+  e.preventDefault()
+})
+</script>
+</body>
+</html>
