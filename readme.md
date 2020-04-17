@@ -23,4 +23,12 @@ FAQ
 
 ### How do I save?
 
-There's no "feature" for this. 
+There's no "feature" for this. In most browsers, you can save the page as an HTML file. This should save your diagram and allow you to pick up where you left off. Screenshots are also an option.
+
+### How do I start over?
+
+Right now, you can either mash Ctrl-Z or refresh the page (probably F5).
+
+### How do I export to SVG?
+
+That would be nice, wouldn't it?
