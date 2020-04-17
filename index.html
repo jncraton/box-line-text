@@ -36,6 +36,7 @@ figcaption {
 <script>
 let mousedown
 let tmpbox
+let elements = []
 
 function snap(coords) {
   return [coords].flat().map(c => Math.round(c / 64) * 64)
@@ -52,7 +53,7 @@ document.body.addEventListener('mousedown', (e) => {
   mousedown = [e.clientX, e.clientY]
 })
 
-function createCaption(p, parent=document.body) {
+function createCaption(p, parent=document.body, undo=true) {
     let input = document.createElement('figcaption')
     ;[input.style.left, input.style.top] = snap(p)
     input.contentEditable = 'true'
@@ -60,6 +61,8 @@ function createCaption(p, parent=document.body) {
     parent.append(input)
 
     input.focus()
+
+    if (undo) elements.push(input)
 
     return input
 }
@@ -78,8 +81,12 @@ function createBox(p1, p2, tmp=false) {
     
     document.body.prepend(box)
 
-    if (tmp)
+    if (tmp) {
       tmpbox = box
+    } else {
+      createCaption([0,0], box, undo=false)
+      elements.push(box)
+    }
 
     return box
 }
@@ -100,8 +107,7 @@ document.body.addEventListener('mouseup', (e) => {
     
     createCaption(mouseup)
   } else {
-    let box = createBox(mouseup, mousedown)
-    createCaption([0,0], box)
+    createBox(mouseup, mousedown)
   }
 
   mousedown = false
@@ -112,6 +118,13 @@ document.body.addEventListener('mousemove', (e) => {
 
   createBox([e.clientX, e.clientY], mousedown, tmp=true)
 })
+
+document.addEventListener('keydown', function(event) {
+  if (event.ctrlKey && event.key === 'z') {
+    let last = elements.pop()
+    last.remove()
+  }
+});
 </script>
 </body>
 </html>
