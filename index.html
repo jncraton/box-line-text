@@ -31,12 +31,12 @@ function snap(coords) {
 }
 
 document.body.addEventListener('mousedown', (e) => {
-  e.preventDefault()
-
   if (e.target.tagName.toLowerCase() == 'input') {
     mousedown = false
     return false
   }
+
+  e.preventDefault()
 
   mousedown = [e.clientX, e.clientY]
 
