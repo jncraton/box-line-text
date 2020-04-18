@@ -1,7 +1,11 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+<meta name=viewport content="width=device-width, initial-scale=1"/>
+<title>Box Box Line</title>
 <style>
-body {
+html,body {
   height: 100%;
   width: 100%;
   font-size: 32px;
@@ -32,7 +36,6 @@ figcaption {
 </style>
 </head>
 <body>
-
 <script>
 let mousedown
 let tmpbox
@@ -55,7 +58,7 @@ document.body.addEventListener('mousedown', (e) => {
 
 function createCaption(p, parent=document.body, undo=true) {
     let input = document.createElement('figcaption')
-    ;[input.style.left, input.style.top] = snap(p)
+    ;[input.style.left, input.style.top] = snap(p).map(s => `${s}px`)
     input.contentEditable = 'true'
     
     parent.append(input)
@@ -75,9 +78,9 @@ function createBox(p1, p2, tmp=false) {
     ;[box.style.left, box.style.top] = snap([
       Math.min(p1[0], p2[0]),
       Math.min(p1[1], p2[1])
-    ])
-    let size = p1.map((s, i) => Math.abs(s - p2[i]))  
-    ;[box.style.width, box.style.height] = snap(size)
+    ]).map(s => `${s}px`)
+    let size = p1.map((s, i) => Math.abs(s - p2[i]))
+    ;[box.style.width, box.style.height] = snap(size).map(s => `${s}px`)
     
     document.body.prepend(box)
 
