@@ -69,7 +69,6 @@ function createBox(p1, p2) {
     ;[box.style.width, box.style.height] = snap(size).map(s => `${s}px`)
     
     document.body.append(box)
-
     createCaption([0,0], box)
 
     return box
