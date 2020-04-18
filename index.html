@@ -81,7 +81,10 @@ document.body.addEventListener('mouseup', (e) => {
 })
 
 document.addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key == 'z') document.querySelector('body>:last-child').remove()
+  if (e.ctrlKey && e.key == 'z') {
+    document.querySelector('body>:last-child').remove()
+    e.preventDefault()
+  }
 })
 </script>
 </body>
