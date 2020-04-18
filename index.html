@@ -46,17 +46,6 @@ function snap(coords) {
   return [coords].flat().map(c => Math.round(c / 64) * 64)
 }
 
-document.body.addEventListener('mousedown', (e) => {
-  if (e.target.tagName.toLowerCase() == 'figcaption') {
-    mousedown = false
-    return false
-  }
-
-  e.preventDefault()
-
-  mousedown = [e.clientX, e.clientY]
-})
-
 function createCaption(p, parent=document.body, undo=true) {
     let input = document.createElement('figcaption')
     ;[input.style.left, input.style.top] = snap(p).map(s => `${s}px`)
@@ -95,6 +84,23 @@ function createBox(p1, p2, tmp=false) {
     return box
 }
 
+document.body.addEventListener('mousedown', (e) => {
+  if (e.target.tagName.toLowerCase() == 'figcaption') {
+    mousedown = false
+    return false
+  }
+
+  e.preventDefault()
+
+  mousedown = [e.clientX, e.clientY]
+})
+
+document.body.addEventListener('mousemove', (e) => {
+  if (!mousedown) return false
+
+  createBox([e.clientX, e.clientY], mousedown, tmp=true)
+})
+
 document.body.addEventListener('mouseup', (e) => {
   e.preventDefault()
   tmpbox && tmpbox.remove()
@@ -115,12 +121,6 @@ document.body.addEventListener('mouseup', (e) => {
   }
 
   mousedown = false
-})
-
-document.body.addEventListener('mousemove', (e) => {
-  if (!mousedown) return false
-
-  createBox([e.clientX, e.clientY], mousedown, tmp=true)
 })
 
 document.addEventListener('keydown', function(event) {
