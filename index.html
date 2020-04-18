@@ -75,13 +75,13 @@ document.body.addEventListener('mousedown', (e) => {
 })
 
 document.body.addEventListener('mousemove', (e) => {
-  if (document.querySelector('.temp')) document.querySelector('.temp').remove()
+  document.querySelectorAll('.temp').forEach(e => e.remove())
 
   if (mousedown) createBox([e.clientX, e.clientY], dragstart, 'temp')
 })
 
 document.body.addEventListener('mouseup', (e) => {
-  if (document.querySelector('.temp')) document.querySelector('.temp').remove()
+  document.querySelectorAll('.temp').forEach(e => e.remove())
 
   e.preventDefault()
 
