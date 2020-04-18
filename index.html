@@ -58,9 +58,7 @@ function createCaption(p, parent=document.body) {
     return input
 }
 
-function createBox(p1, p2, tmp=false) {
-    tmpbox && tmpbox.remove()
- 
+function createBox(p1, p2) {
     let box = document.createElement('figure')
 
     ;[box.style.left, box.style.top] = snap([
@@ -72,10 +70,6 @@ function createBox(p1, p2, tmp=false) {
     
     document.body.append(box)
 
-    if (tmp) {
-      tmpbox = box
-    }
-    
     createCaption([0,0], box)
 
     return box
@@ -93,12 +87,15 @@ document.body.addEventListener('mousedown', (e) => {
 })
 
 document.body.addEventListener('mousemove', (e) => {
-  if (mousedown) createBox([e.clientX, e.clientY], dragstart, tmp=true)
+  tmpbox && tmpbox.remove()
+
+  if (mousedown) tmpbox = createBox([e.clientX, e.clientY], dragstart)
 })
 
 document.body.addEventListener('mouseup', (e) => {
-  e.preventDefault()
   tmpbox && tmpbox.remove()
+
+  e.preventDefault()
 
   if (!mousedown) return false
   mousedown = false
