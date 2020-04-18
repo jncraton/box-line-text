@@ -53,6 +53,7 @@ function createElement(p1, p2, temporary=true) {
 document.body.addEventListener('mousedown', (e) => {
   if (e.target.tagName == 'P') return false
   dragstart = [e.clientX, e.clientY]
+  e.preventDefault()
 })
 
 document.body.addEventListener('mousemove', (e) => {
