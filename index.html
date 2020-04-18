@@ -39,26 +39,26 @@ function snap(coords, offset=0) {
 }
 
 function createCaption(parent) {
-    let caption = document.createElement('figcaption')
-    
-    caption.contentEditable = 'true'
-    parent.append(caption)
-    caption.focus()
+  let caption = document.createElement('figcaption')
+  
+  caption.contentEditable = 'true'
+  parent.append(caption)
+  caption.focus()
 }
 
 function createBox(p1, p2, cls=false) {
-    let box = document.createElement('figure')
+  let box = document.createElement('figure')
 
-    ;[box.style.left, box.style.top] = snap(p1.map((s, i) => Math.min(s, p2[i])))
-    ;[box.style.width, box.style.height] = snap(p1.map((s, i) => Math.abs(s - p2[i])), -2)
-    if (!box.style.width && !box.style.height) {
-      box.style.border = 'none'
-      box.style.width = '100%' // Expand to full screen despite zero width parent
-    }
-    if(cls) box.classList.add(cls)
-    
-    document.body.append(box)
-    createCaption(box)
+  ;[box.style.left, box.style.top] = snap(p1.map((s, i) => Math.min(s, p2[i])))
+  ;[box.style.width, box.style.height] = snap(p1.map((s, i) => Math.abs(s - p2[i])), -2)
+  if (!box.style.width && !box.style.height) {
+    box.style.border = 'none'
+    box.style.width = '100%' // Expand to full screen despite zero width parent
+  }
+  if(cls) box.classList.add(cls)
+  
+  document.body.append(box)
+  createCaption(box)
 }
 
 document.body.addEventListener('mousedown', (e) => {
