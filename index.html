@@ -26,7 +26,6 @@ figcaption {
   color: #333;
   padding:0 .5em;
   line-height:64px;
-  min-width:1920px;
   outline:none;
 }
 </style>
@@ -52,7 +51,10 @@ function createBox(p1, p2, cls=false) {
 
     ;[box.style.left, box.style.top] = snap(p1.map((s, i) => Math.min(s, p2[i])))
     ;[box.style.width, box.style.height] = snap(p1.map((s, i) => Math.abs(s - p2[i])), -2)
-    if (!box.style.width && !box.style.height) box.style.border = 'none';
+    if (!box.style.width && !box.style.height) {
+      box.style.border = 'none'
+      box.style.width = '100%' // Expand to full screen despite zero width parent
+    }
     if(cls) box.classList.add(cls)
     
     document.body.append(box)
