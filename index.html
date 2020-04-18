@@ -74,9 +74,9 @@ function createBox(p1, p2, tmp=false) {
 
     if (tmp) {
       tmpbox = box
-    } else {
-      createCaption([0,0], box)
     }
+    
+    createCaption([0,0], box)
 
     return box
 }
