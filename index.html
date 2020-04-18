@@ -53,7 +53,7 @@ function createElement(p1, p2, temporary=true) {
 document.body.addEventListener('mousedown', (e) => {
   if (e.target.tagName == 'P') return false
   dragstart = [e.clientX, e.clientY]
-  e.preventDefault()
+  e.preventDefault() // Prevents content selection while dragging
 })
 
 document.body.addEventListener('mousemove', (e) => {
@@ -70,7 +70,7 @@ document.body.addEventListener('mouseup', (e) => {
 document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key == 'z') {
     document.querySelector('body>:last-child').remove()
-    e.preventDefault()
+    e.preventDefault() // Prevents user agent text undo
   }
 })
 </script>
