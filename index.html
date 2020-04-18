@@ -33,7 +33,7 @@ figcaption {
 </head>
 <body>
 <script>
-let mousedown, dragstart, tmpbox
+let mousedown, dragstart
 
 function snap(coords) {
   return [coords].flat().map(c => Math.round(c / 64) * 64)
@@ -48,7 +48,7 @@ function createCaption(p, parent=document.body) {
     caption.focus()
 }
 
-function createBox(p1, p2) {
+function createBox(p1, p2, cls=false) {
     let box = document.createElement('figure')
 
     ;[box.style.left, box.style.top] = snap([
@@ -57,11 +57,10 @@ function createBox(p1, p2) {
     ]).map(s => `${s}px`)
     let size = p1.map((s, i) => Math.abs(s - p2[i]))
     ;[box.style.width, box.style.height] = snap(size).map(s => `${s}px`)
+    if(cls) box.classList.add(cls)
     
     document.body.append(box)
     createCaption([0,0], box)
-
-    return box
 }
 
 document.body.addEventListener('mousedown', (e) => {
@@ -76,13 +75,13 @@ document.body.addEventListener('mousedown', (e) => {
 })
 
 document.body.addEventListener('mousemove', (e) => {
-  tmpbox && tmpbox.remove()
+  if (document.querySelector('.temp')) document.querySelector('.temp').remove()
 
-  if (mousedown) tmpbox = createBox([e.clientX, e.clientY], dragstart)
+  if (mousedown) createBox([e.clientX, e.clientY], dragstart, 'temp')
 })
 
 document.body.addEventListener('mouseup', (e) => {
-  tmpbox && tmpbox.remove()
+  if (document.querySelector('.temp')) document.querySelector('.temp').remove()
 
   e.preventDefault()
 
