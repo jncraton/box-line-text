@@ -81,8 +81,6 @@ document.body.addEventListener('mousemove', (e) => {
 document.body.addEventListener('mouseup', (e) => {
   document.querySelectorAll('.temp').forEach(e => e.remove())
 
-  e.preventDefault()
-
   if (!mousedown) return false
   mousedown = false
 
