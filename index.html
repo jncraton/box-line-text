@@ -45,10 +45,10 @@ function createCaption(parent) {
 function createBox(p1, p2, cls=false) {
   let box = document.createElement('figure')
 
-  let snap = s => Math.round(s / 64) * 64
+  let snap = s => Math.round(s / 64) * 64 - 2 + 'px'
 
-  ;[box.style.left, box.style.top] = p1.map((s, i) => snap(Math.min(s, p2[i])) + 'px')
-  ;[box.style.width, box.style.height] = p1.map((s, i) => snap(Math.abs(s - p2[i]))-2+'px')
+  ;[box.style.left, box.style.top] = p1.map((s, i) => snap(Math.min(s, p2[i])))
+  ;[box.style.width, box.style.height] = p1.map((s, i) => snap(Math.abs(s - p2[i])))
   if (!box.style.width && !box.style.height) {
     box.style.border = 'none'
     box.style.width = '100%' // Expand to full screen despite zero width parent
