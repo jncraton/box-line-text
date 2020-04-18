@@ -41,13 +41,12 @@ figcaption {
 <body>
 <script>
 let mousedown, dragstart, tmpbox
-let elements = []
 
 function snap(coords) {
   return [coords].flat().map(c => Math.round(c / 64) * 64)
 }
 
-function createCaption(p, parent=document.body, undo=true) {
+function createCaption(p, parent=document.body) {
     let input = document.createElement('figcaption')
     ;[input.style.left, input.style.top] = snap(p).map(s => `${s}px`)
     input.contentEditable = 'true'
@@ -55,8 +54,6 @@ function createCaption(p, parent=document.body, undo=true) {
     parent.append(input)
 
     input.focus()
-
-    if (undo) elements.push(input)
 
     return input
 }
@@ -78,8 +75,7 @@ function createBox(p1, p2, tmp=false) {
     if (tmp) {
       tmpbox = box
     } else {
-      createCaption([0,0], box, undo=false)
-      elements.push(box)
+      createCaption([0,0], box)
     }
 
     return box
@@ -118,7 +114,7 @@ document.body.addEventListener('mouseup', (e) => {
 })
 
 document.addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key == 'z') elements.pop().remove()
+  if (e.ctrlKey && e.key == 'z') document.querySelector('body>:last-child').remove()
 });
 </script>
 </body>
