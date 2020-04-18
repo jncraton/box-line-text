@@ -16,6 +16,7 @@ html,body {
 * {
   margin:0;
   padding:0;
+  z-index:0;
 }
 figure {
   position:absolute;
@@ -24,6 +25,7 @@ figure {
   border-radius:10px;
 }
 figcaption {
+  z-index:1;
   position:absolute;
   border:none;
   outline:none;
@@ -71,7 +73,7 @@ function createBox(p1, p2, tmp=false) {
     let size = p1.map((s, i) => Math.abs(s - p2[i]))
     ;[box.style.width, box.style.height] = snap(size).map(s => `${s}px`)
     
-    document.body.prepend(box)
+    document.body.append(box)
 
     if (tmp) {
       tmpbox = box
