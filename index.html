@@ -16,11 +16,11 @@ html,body {
   margin:0;
   padding:0;
 }
-figure {
+section {
   border:2px solid #777;
   border-radius:10px;
 }
-figcaption {
+p {
   z-index:1;
   font:32px Noto Sans CJK JP, arial;
   color:#333;
@@ -32,44 +32,41 @@ figcaption {
 </head>
 <body>
 <script>
-function createBox(p1, p2, cls=false) {
+function createElement(p1, p2, cls=false) {
   document.querySelectorAll('.temp').forEach(e => e.remove())
 
-  let box = document.createElement('figure')
-  if(cls) box.classList.add(cls)
-
+  let e = document.createElement('section')
   let snap = s => Math.round(s / 64) * 64 - 2 + 'px'
-  ;[box.style.left, box.style.top] = p1.map((s, i) => snap(Math.min(s, p2[i])))
-  ;[box.style.width, box.style.height] = p1.map((s, i) => snap(Math.abs(s - p2[i])))
-  if (!box.style.width && !box.style.height) {
-    box.style.border = 'none'
-    box.style.width = '100%' // Expand to full screen despite zero width parent
-  }
-  
-  document.body.append(box)
+  ;[e.style.width, e.style.height] = p1.map((s, i) => snap(Math.abs(s - p2[i])))
 
-  let caption = document.createElement('figcaption')
-  caption.contentEditable = 'true'
-  box.append(caption)
-  caption.focus()
+  let text = document.createElement('p')
+  text.contentEditable = 'true'
+  e.append(text)
+
+  if (!e.style.width && !e.style.height) e = text
+
+  ;[e.style.left, e.style.top] = p1.map((s, i) => snap(Math.min(s, p2[i])))
+  if(cls) e.classList.add(cls)
+  document.body.append(e)
+  text.focus()
 }
 
 document.body.addEventListener('mousedown', (e) => {
-  if (e.target.tagName == 'FIGCAPTION') return false
+  if (e.target.tagName == 'P') return false
 
   mousedown = true
   dragstart = [e.clientX, e.clientY]
 })
 
 document.body.addEventListener('mousemove', (e) => {
-  if (window.mousedown) createBox([e.clientX, e.clientY], dragstart, 'temp')
+  if (window.mousedown) createElement([e.clientX, e.clientY], dragstart, 'temp')
 })
 
 document.body.addEventListener('mouseup', (e) => {
   if (!mousedown) return false
   mousedown = false
 
-  createBox(dragstart, [e.clientX, e.clientY])
+  createElement(dragstart, [e.clientX, e.clientY])
 })
 
 document.addEventListener('keydown', function(e) {
