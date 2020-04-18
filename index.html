@@ -38,8 +38,7 @@ figcaption {
 </head>
 <body>
 <script>
-let mousedown
-let tmpbox
+let mousedown, dragstart, tmpbox
 let elements = []
 
 function snap(coords) {
@@ -86,19 +85,19 @@ function createBox(p1, p2, tmp=false) {
 
 document.body.addEventListener('mousedown', (e) => {
   if (e.target.tagName.toLowerCase() == 'figcaption') {
-    mousedown = false
     return false
   }
 
   e.preventDefault()
 
-  mousedown = [e.clientX, e.clientY]
+  mousedown = true
+  dragstart = [e.clientX, e.clientY]
 })
 
 document.body.addEventListener('mousemove', (e) => {
   if (!mousedown) return false
 
-  createBox([e.clientX, e.clientY], mousedown, tmp=true)
+  createBox([e.clientX, e.clientY], dragstart, tmp=true)
 })
 
 document.body.addEventListener('mouseup', (e) => {
@@ -106,21 +105,16 @@ document.body.addEventListener('mouseup', (e) => {
   tmpbox && tmpbox.remove()
 
   if (!mousedown) return false
-
-  let mouseup = [e.clientX, e.clientY]
-
-  if (mouseup.every((p, i) => Math.abs(p - mousedown[i]) < 8 )) {
-    if (e.target.tagName.toLowerCase() == 'figcaption' || !mousedown) {
-      mousedown = false
-      return false
-    }
-    
-    createCaption(mouseup)
-  } else {
-    createBox(mouseup, mousedown)
-  }
-
   mousedown = false
+
+  let dragend = [e.clientX, e.clientY]
+
+  if (dragend.every((p, i) => Math.abs(p - dragstart[i]) < 8 )) {
+    if (e.target.tagName == 'FIGCAPTION') return false
+    createCaption(dragend)
+  } else {
+    createBox(dragstart, dragend)
+  }
 })
 
 document.addEventListener('keydown', function(e) {
