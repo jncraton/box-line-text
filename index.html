@@ -51,10 +51,7 @@ function createCaption(p, parent=document.body) {
 function createBox(p1, p2, cls=false) {
     let box = document.createElement('figure')
 
-    ;[box.style.left, box.style.top] = snap([
-      Math.min(p1[0], p2[0]),
-      Math.min(p1[1], p2[1])
-    ])
+    ;[box.style.left, box.style.top] = snap(p1.map((s, i) => Math.min(s, p2[i])))
     let size = p1.map((s, i) => Math.abs(s - p2[i]))
     ;[box.style.width, box.style.height] = snap(size)
     if(cls) box.classList.add(cls)
