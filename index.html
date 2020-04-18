@@ -95,9 +95,7 @@ document.body.addEventListener('mousedown', (e) => {
 })
 
 document.body.addEventListener('mousemove', (e) => {
-  if (!mousedown) return false
-
-  createBox([e.clientX, e.clientY], dragstart, tmp=true)
+  if (mousedown) createBox([e.clientX, e.clientY], dragstart, tmp=true)
 })
 
 document.body.addEventListener('mouseup', (e) => {
