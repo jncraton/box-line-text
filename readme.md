@@ -29,6 +29,10 @@ There's no special feature for this. In most browsers, you can save the page as 
 
 You can either mash Ctrl-Z or refresh the page (probably F5).
 
+### Is there any way to make the diagram larger or smaller?
+
+It wasn't easy, but I worked hard with my friends at Mozilla and Google to bring this to you. This feature can be accessed using Ctrl-+ and Ctrl--.
+
 ### How do I export to SVG?
 
 That would be nice, wouldn't it?
