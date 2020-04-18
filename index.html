@@ -50,17 +50,17 @@ function createElement(p1, p2, temporary=true) {
   text.focus()
 }
 
-document.body.addEventListener('mousedown', (e) => {
+document.addEventListener('mousedown', (e) => {
   if (e.target.tagName == 'P') return false
   dragstart = [e.clientX, e.clientY]
   e.preventDefault() // Prevents content selection while dragging
 })
 
-document.body.addEventListener('mousemove', (e) => {
+document.addEventListener('mousemove', (e) => {
   if (window.dragstart) createElement([e.clientX, e.clientY], dragstart)
 })
 
-document.body.addEventListener('mouseup', (e) => {
+document.addEventListener('mouseup', (e) => {
   if (!dragstart) return false
 
   createElement(dragstart, [e.clientX, e.clientY], false)
