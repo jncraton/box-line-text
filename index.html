@@ -38,10 +38,9 @@ function snap(coords, offset=0) {
   return coords.map(c => `${Math.round(c / 64) * 64 + offset}px`)
 }
 
-function createCaption(p, parent=document.body) {
+function createCaption(parent) {
     let caption = document.createElement('figcaption')
     
-    ;[caption.style.left, caption.style.top] = snap(p)
     caption.contentEditable = 'true'
     parent.append(caption)
     caption.focus()
@@ -56,7 +55,7 @@ function createBox(p1, p2, cls=false) {
     if(cls) box.classList.add(cls)
     
     document.body.append(box)
-    createCaption([0,0], box)
+    createCaption(box)
 }
 
 document.body.addEventListener('mousedown', (e) => {
