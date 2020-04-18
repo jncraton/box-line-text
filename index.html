@@ -40,15 +40,12 @@ function snap(coords) {
 }
 
 function createCaption(p, parent=document.body) {
-    let input = document.createElement('figcaption')
-    ;[input.style.left, input.style.top] = snap(p).map(s => `${s}px`)
-    input.contentEditable = 'true'
+    let caption = document.createElement('figcaption')
     
-    parent.append(input)
-
-    input.focus()
-
-    return input
+    ;[caption.style.left, caption.style.top] = snap(p).map(s => `${s}px`)
+    caption.contentEditable = 'true'
+    parent.append(caption)
+    caption.focus()
 }
 
 function createBox(p1, p2) {
