@@ -32,7 +32,7 @@ p {
 </head>
 <body>
 <script>
-function createElement(p1, p2) {
+function createElement(p1, p2, temporary=true) {
   document.querySelectorAll('body>*:empty').forEach(e => e.remove())
 
   let e = document.createElement('section')
@@ -41,7 +41,7 @@ function createElement(p1, p2) {
 
   let text = document.createElement('p')
   text.contentEditable = 'true'
-  if (!mousedown) e.append(text)
+  if (!temporary) e.append(text)
 
   if (!e.style.width && !e.style.height) e = text
 
@@ -52,20 +52,18 @@ function createElement(p1, p2) {
 
 document.body.addEventListener('mousedown', (e) => {
   if (e.target.tagName == 'P') return false
-
-  mousedown = true
   dragstart = [e.clientX, e.clientY]
 })
 
 document.body.addEventListener('mousemove', (e) => {
-  if (window.mousedown) createElement([e.clientX, e.clientY], dragstart)
+  if (window.dragstart) createElement([e.clientX, e.clientY], dragstart)
 })
 
 document.body.addEventListener('mouseup', (e) => {
-  if (!mousedown) return false
-  mousedown = false
+  if (!dragstart) return false
 
-  createElement(dragstart, [e.clientX, e.clientY])
+  createElement(dragstart, [e.clientX, e.clientY], false)
+  dragstart = false
 })
 
 document.addEventListener('keydown', function(e) {
