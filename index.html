@@ -66,8 +66,6 @@ function createBox(p1, p2, cls=false) {
 document.body.addEventListener('mousedown', (e) => {
   if (e.target.tagName == 'FIGCAPTION') return false
 
-  e.preventDefault()
-
   mousedown = true
   dragstart = [e.clientX, e.clientY]
 })
