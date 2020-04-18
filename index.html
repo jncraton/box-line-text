@@ -33,6 +33,8 @@ figcaption {
 <body>
 <script>
 function createBox(p1, p2, cls=false) {
+  document.querySelectorAll('.temp').forEach(e => e.remove())
+
   let box = document.createElement('figure')
   if(cls) box.classList.add(cls)
 
@@ -60,14 +62,10 @@ document.body.addEventListener('mousedown', (e) => {
 })
 
 document.body.addEventListener('mousemove', (e) => {
-  document.querySelectorAll('.temp').forEach(e => e.remove())
-
   if (window.mousedown) createBox([e.clientX, e.clientY], dragstart, 'temp')
 })
 
 document.body.addEventListener('mouseup', (e) => {
-  document.querySelectorAll('.temp').forEach(e => e.remove())
-
   if (!mousedown) return false
   mousedown = false
 
