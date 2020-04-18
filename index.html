@@ -32,8 +32,8 @@ p {
 </head>
 <body>
 <script>
-function createElement(p1, p2, cls=false) {
-  document.querySelectorAll('.temp').forEach(e => e.remove())
+function createElement(p1, p2) {
+  document.querySelectorAll('body>*:empty').forEach(e => e.remove())
 
   let e = document.createElement('section')
   let snap = s => Math.round(s / 64) * 64 - 2 + 'px'
@@ -41,12 +41,11 @@ function createElement(p1, p2, cls=false) {
 
   let text = document.createElement('p')
   text.contentEditable = 'true'
-  e.append(text)
+  if (!mousedown) e.append(text)
 
   if (!e.style.width && !e.style.height) e = text
 
   ;[e.style.left, e.style.top] = p1.map((s, i) => snap(Math.min(s, p2[i])))
-  if(cls) e.classList.add(cls)
   document.body.append(e)
   text.focus()
 }
@@ -59,7 +58,7 @@ document.body.addEventListener('mousedown', (e) => {
 })
 
 document.body.addEventListener('mousemove', (e) => {
-  if (window.mousedown) createElement([e.clientX, e.clientY], dragstart, 'temp')
+  if (window.mousedown) createElement([e.clientX, e.clientY], dragstart)
 })
 
 document.body.addEventListener('mouseup', (e) => {
