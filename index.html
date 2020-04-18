@@ -36,13 +36,13 @@ figcaption {
 let mousedown, dragstart
 
 function snap(coords) {
-  return [coords].flat().map(c => Math.round(c / 64) * 64)
+  return [coords].flat().map(c => `${Math.round(c / 64) * 64}px`)
 }
 
 function createCaption(p, parent=document.body) {
     let caption = document.createElement('figcaption')
     
-    ;[caption.style.left, caption.style.top] = snap(p).map(s => `${s}px`)
+    ;[caption.style.left, caption.style.top] = snap(p)
     caption.contentEditable = 'true'
     parent.append(caption)
     caption.focus()
@@ -54,9 +54,9 @@ function createBox(p1, p2, cls=false) {
     ;[box.style.left, box.style.top] = snap([
       Math.min(p1[0], p2[0]),
       Math.min(p1[1], p2[1])
-    ]).map(s => `${s}px`)
+    ])
     let size = p1.map((s, i) => Math.abs(s - p2[i]))
-    ;[box.style.width, box.style.height] = snap(size).map(s => `${s}px`)
+    ;[box.style.width, box.style.height] = snap(size)
     if(cls) box.classList.add(cls)
     
     document.body.append(box)
