@@ -36,7 +36,7 @@ figcaption {
 let mousedown, dragstart
 
 function snap(coords) {
-  return [coords].flat().map(c => `${Math.round(c / 64) * 64}px`)
+  return coords.map(c => `${Math.round(c / 64) * 64}px`)
 }
 
 function createCaption(p, parent=document.body) {
