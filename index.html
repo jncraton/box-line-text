@@ -81,7 +81,6 @@ document.body.addEventListener('mouseup', (e) => {
   let dragend = [e.clientX, e.clientY]
 
   if (dragend.every((p, i) => Math.abs(p - dragstart[i]) < 8 )) {
-    if (e.target.tagName == 'FIGCAPTION') return false
     createCaption(dragend)
   } else {
     createBox(dragstart, dragend)
