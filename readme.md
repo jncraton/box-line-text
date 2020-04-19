@@ -1,6 +1,8 @@
 Box Line Text
 =============
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/99b4904a-b8a1-42b7-8495-13215fb6ba7d/deploy-status)](https://app.netlify.com/sites/box-line-text/deploys)
+
 ![Basic demo](media/demo.gif)
 
 ![Use it](https://box-line-text.netlify.app/)
