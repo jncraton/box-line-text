@@ -24,12 +24,8 @@ There's no special feature for this. In most browsers, you can save the page as 
 
 ### How do I start over?
 
-The simplest way is to refresh the page (probably F5).
+The simplest way is to refresh the page (probably by pressing F5).
 
-### Is there any way to make the diagram larger or smaller?
+### Is there a way to make the diagram larger or smaller?
 
 Native zoom in your browser is supported and should work for this purpose.
-
-### How do I change settings (grid size, colors, etc)
-
-This application is minimalistic, so there are no settings for these. The source code is concise, so it should be easy enough to make small adjustments.
