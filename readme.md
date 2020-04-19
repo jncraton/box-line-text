@@ -3,7 +3,7 @@ Box Line Text
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/99b4904a-b8a1-42b7-8495-13215fb6ba7d/deploy-status)](https://app.netlify.com/sites/box-line-text/deploys)
 
-Box Line Text (BLT) is a simple virtual whiteboarding tool. It is meant to be as simple as possible to use and employs an extremely lean set of features.
+Box Line Text (BLT) is a simple virtual whiteboarding tool. It is minimalistic and contains no visible UI for a clean screencasting experience.
 
 [Use it](https://box-line-text.netlify.app/)
 
@@ -14,7 +14,7 @@ Usage
 
 - Click anywhere to create a text element
 - Click and drag a straight line to make a line
-- Click and drag a diagonal to make a box
+- Click and drag a diagonal line to make a box
 - Press Ctrl-z to undo creating elements
 
 This tool generally assumes that you are screencasting from a laptop or desktop, so it is optimized for using a mouse to create figures and a physical keyboard to create text. It doesn't provide touch or pen support. There are much better tools available for that type of interface.
