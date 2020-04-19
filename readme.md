@@ -1,41 +1,34 @@
-Box Box Line
-============
+Box Line Text
+=============
 
 ![Basic demo](media/demo.gif)
 
-Box Box Line is a simple virtual whiteboarding tool. The existing tools were all too noisey or too complicated for me, so I built my own to meet my needs. Perhaps it meets yours as well.
-
-Overview
---------
-
-This tool generally assumes that you are screencasting from a laptop or desktop. It doesn't provide touch or pen support. There are much better tools available for that type of interface.
+Box Line Text (BLT) is a simple virtual whiteboarding tool. It is meant to be as simple as possible to use and employs an extremely lean set of features.
 
 Usage
 -----
 
-- Click and drag to draw boxes
-- Click anywhere to create a new text element
-- Lines are just flat boxes
-- Ctrl-Z undoes previous actions
+- Click anywhere to create a text element
+- Click and drag a straight line to make a line
+- Click and drag a diagonal to make a box
+- Press Ctrl-z to undo creating elements
+
+This tool generally assumes that you are screencasting from a laptop or desktop, so it is optimized for using a mouse to create figures and a physical keyboard to create text. It doesn't provide touch or pen support. There are much better tools available for that type of interface.
 
 FAQ
 ---
 
 ### How do I save?
 
-There's no special feature for this. In most browsers, you can save the page as an HTML file. This should save your diagram and allow you to pick up where you left off. Screenshots are also an option.
+There's no special feature for this. In most browsers, you can save the page as an HTML file. This should save your diagram and allow you to pick up where you left off. Screenshots and/or screen recordings may also be used to save your work.
 
 ### How do I start over?
 
-You can either mash Ctrl-Z or refresh the page (probably F5).
+The simplest way is to refresh the page (probably F5).
 
 ### Is there any way to make the diagram larger or smaller?
 
-It wasn't easy, but I worked hard with my friends at Mozilla and Google to bring this to you. This feature can be accessed using Ctrl-+ and Ctrl--.
-
-### How do I export to SVG?
-
-That would be nice, wouldn't it?
+Native zoom in your browser is supported and should work for this purpose.
 
 ### How do I change settings (grid size, colors, etc)
 
