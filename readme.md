@@ -3,11 +3,11 @@ Box Line Text
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/99b4904a-b8a1-42b7-8495-13215fb6ba7d/deploy-status)](https://app.netlify.com/sites/box-line-text/deploys)
 
-![Basic demo](media/demo.gif)
+Box Line Text (BLT) is a simple virtual whiteboarding tool. It is meant to be as simple as possible to use and employs an extremely lean set of features.
 
 [Use it](https://box-line-text.netlify.app/)
 
-Box Line Text (BLT) is a simple virtual whiteboarding tool. It is meant to be as simple as possible to use and employs an extremely lean set of features.
+![Basic demo](media/demo.gif)
 
 Usage
 -----
