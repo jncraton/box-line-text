@@ -54,6 +54,7 @@ function createElement(p1, p2, temporary=true) {
 function mousedown(e) {
   if (e.shiftKey) {
     if (e.target != document.body) e.target.remove()
+    erasing = true
     return false
   }
   if (e.target.tagName == 'P') return false
@@ -65,6 +66,10 @@ document.addEventListener('mousedown', mousedown)
 document.addEventListener('touchstart', mousedown)
 
 function mousemove(e) {
+  if (window.erasing) {
+    if (e.target != document.body) e.target.remove()
+    return false
+  }
   e = e.touches ? e.touches[0] : e
   if (window.dragstart) createElement([e.clientX, e.clientY], dragstart)
 }
@@ -72,6 +77,10 @@ document.addEventListener('mousemove', mousemove)
 document.addEventListener('touchmove', mousemove)
 
 function mouseup(e) {
+  if (window.erasing) {
+    erasing = false
+    return false
+  }
   e = e.touches ? e.changedTouches[0] : e
   if (!dragstart) return false
 
