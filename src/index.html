@@ -51,22 +51,31 @@ function createElement(p1, p2, temporary=true) {
   text.focus()
 }
 
-document.addEventListener('mousedown', (e) => {
+function mousedown(e) {
   if (e.target.tagName == 'P') return false
-  dragstart = [e.clientX, e.clientY]
   e.preventDefault() // Prevents content selection while dragging
-})
+  e = e.touches ? e.touches[0] : e
+  dragstart = [e.clientX, e.clientY]
+}
+document.addEventListener('mousedown', mousedown)
+document.addEventListener('touchstart', mousedown)
 
-document.addEventListener('mousemove', (e) => {
+function mousemove(e) {
+  e = e.touches ? e.touches[0] : e
   if (window.dragstart) createElement([e.clientX, e.clientY], dragstart)
-})
+}
+document.addEventListener('mousemove', mousemove)
+document.addEventListener('touchmove', mousemove)
 
-document.addEventListener('mouseup', (e) => {
+function mouseup(e) {
+  e = e.touches ? e.changedTouches[0] : e
   if (!dragstart) return false
 
   createElement(dragstart, [e.clientX, e.clientY], false)
   dragstart = false
-})
+}
+document.addEventListener('mouseup', mouseup)
+document.addEventListener('touchend', mouseup)
 
 document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key == 'z') {
