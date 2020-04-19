@@ -16,6 +16,8 @@ Usage
 - Click and drag a straight line to make a line
 - Click and drag a diagonal line to make a box
 - Press Ctrl-z to undo creating elements
+- Right-click to remove a box or line
+- Use the native browser zoom feature to add more space
 
 This tool generally assumes that you are screencasting from a laptop or desktop, so it is optimized for using a mouse to create figures and a physical keyboard to create text. It doesn't provide touch or pen support. There are much better tools available for that type of interface.
 
