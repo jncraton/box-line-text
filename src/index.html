@@ -51,7 +51,14 @@ function createElement(p1, p2, temporary=true) {
   text.focus()
 }
 
+// Disable right click context menu
+document.addEventListener('contextmenu', e => e.preventDefault())
+
 function mousedown(e) {
+  if (e.button == 2) {
+    if (e.target != document.body) e.target.remove()
+    return false
+  }
   if (e.target.tagName == 'P') return false
   e.preventDefault() // Prevents content selection while dragging
   e = e.touches ? e.touches[0] : e
