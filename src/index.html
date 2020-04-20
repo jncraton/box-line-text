@@ -19,6 +19,9 @@ body {
     width: 10000px;
     height: 10000px;
 }
+body.panning {
+  cursor:grabbing;
+}
 * {
   position:absolute;
   margin:0;
@@ -64,6 +67,12 @@ function createElement(p1, p2, temporary=true) {
 }
 
 function mousedown(e) {
+  if (e.button == 2 && !window.panning) {
+    panning = true
+    document.body.classList += "panning"
+    body_rect = document.body.getBoundingClientRect()
+  }
+
   if (e.shiftKey) {
     if (e.target != document.body) e.target.remove()
     erasing = true
@@ -90,7 +99,7 @@ function mousemove(e) {
     return false
   }
 
-  if (window.dragstart) last_elem = createElement([e.clientX, e.clientY], dragstart)
+  if (window.dragstart) createElement([e.clientX, e.clientY], dragstart)
 }
 document.addEventListener('mousemove', mousemove)
 document.addEventListener('touchmove', mousemove)
@@ -106,10 +115,11 @@ function mouseup(e) {
   if (window.panning) {
     panning = false
     dragstart = false
+    document.body.classList = ""
     return false
   }
 
-  last_elem = createElement(dragstart, [e.clientX, e.clientY], false)
+  createElement(dragstart, [e.clientX, e.clientY], false)
   dragstart = false
 }
 document.addEventListener('mouseup', mouseup)
@@ -120,16 +130,11 @@ document.addEventListener('keydown', function(e) {
     document.querySelector('body>:last-child').remove()
     e.preventDefault() // Prevents user agent text undo
   }
-  if (e.key == ' ' && !window.panning) {
-    panning = true
-    body_rect = document.body.getBoundingClientRect()
-
-    if (dragstart) {
-        window.last_elem.remove()
-    }
-    e.preventDefault() // Prevents user agent text undo
-  }
 })
+
+document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+}, false);
 </script>
 </body>
 </html>
