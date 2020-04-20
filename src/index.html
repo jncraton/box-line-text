@@ -53,15 +53,17 @@ function createElement(p1, p2, temporary=true) {
 }
 
 function mousedown(e) {
-  if (e.shiftKey) {
-    if (e.target != document.body) e.target.remove()
-    erasing = true
-    return false
+  if (e.shiftKey || e.target.tagName != 'P') {
+    e.preventDefault() // Prevents content selection while dragging
+
+    if (e.shiftKey) {
+      if (e.target != document.body) e.target.remove()
+      erasing = true
+    } else {
+      e = e.touches ? e.touches[0] : e
+      dragstart = [e.clientX, e.clientY]
+    }
   }
-  if (e.target.tagName == 'P') return false
-  e.preventDefault() // Prevents content selection while dragging
-  e = e.touches ? e.touches[0] : e
-  dragstart = [e.clientX, e.clientY]
 }
 document.addEventListener('mousedown', mousedown)
 document.addEventListener('touchstart', mousedown)
