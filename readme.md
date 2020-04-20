@@ -15,6 +15,7 @@ Usage
 - Click anywhere to create a text element
 - Click and drag a straight line to make a line
 - Click and drag a diagonal line to make a box
+- Hold shift to use the mouse as an eraser
 - Press Ctrl-z to undo creating elements
 
 This tool generally assumes that you are screencasting from a laptop or desktop, so it is optimized for using a mouse to create figures and a physical keyboard to create text. It doesn't provide touch or pen support. There are much better tools available for that type of interface.
