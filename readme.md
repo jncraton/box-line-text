@@ -34,3 +34,7 @@ The simplest way is to refresh the page (probably by pressing F5).
 ### Is there a way to make the diagram larger or smaller?
 
 Native zoom in your browser is supported and should work for this purpose.
+
+### Can I make the diagram fill my entire screen?
+
+Yes. Full screen mode is supported. You can enter full screen mode as you normally would in your browser (perhaps by pressing F11).
