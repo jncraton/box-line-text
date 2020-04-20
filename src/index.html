@@ -15,6 +15,10 @@ html,body {
   z-index:0;
   overflow:hidden;
 }
+body {
+    width: 10000px;
+    height: 10000px;
+}
 * {
   position:absolute;
   margin:0;
@@ -34,7 +38,7 @@ p {
 }
 </style>
 </head>
-<body>
+<body style="left:-5000px;top:-5000px;">
 <script>
 function createElement(p1, p2, temporary=true) {
   document.querySelectorAll('body>*:empty').forEach(e => e.remove())
@@ -50,9 +54,13 @@ function createElement(p1, p2, temporary=true) {
   if (!e.style.width && !e.style.height) e = text
   if (e.style.width && !e.style.height) text.style.top = '-66px'
 
-  ;[e.style.left, e.style.top] = p1.map((s, i) => snap(Math.min(s, p2[i])))
+  let br = document.body.getBoundingClientRect()
+  let o = [br.left, br.top]
+
+  ;[e.style.left, e.style.top] = p1.map((s, i) => snap(Math.min(s, p2[i])-o[i]))
   document.body.append(e)
   text.focus()
+  return e;
 }
 
 function mousedown(e) {
@@ -75,7 +83,14 @@ function mousemove(e) {
     return false
   }
   e = e.touches ? e.touches[0] : e
-  if (window.dragstart) createElement([e.clientX, e.clientY], dragstart)
+
+  if (window.panning) {
+    document.body.style.left = window.body_rect.left + (e.clientX - dragstart[0]) + "px"
+    document.body.style.top  = window.body_rect.top + (e.clientY - dragstart[1]) + "px"
+    return false
+  }
+
+  if (window.dragstart) last_elem = createElement([e.clientX, e.clientY], dragstart)
 }
 document.addEventListener('mousemove', mousemove)
 document.addEventListener('touchmove', mousemove)
@@ -88,7 +103,13 @@ function mouseup(e) {
   e = e.touches ? e.changedTouches[0] : e
   if (!dragstart) return false
 
-  createElement(dragstart, [e.clientX, e.clientY], false)
+  if (window.panning) {
+    panning = false
+    dragstart = false
+    return false
+  }
+
+  last_elem = createElement(dragstart, [e.clientX, e.clientY], false)
   dragstart = false
 }
 document.addEventListener('mouseup', mouseup)
@@ -97,6 +118,15 @@ document.addEventListener('touchend', mouseup)
 document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key == 'z') {
     document.querySelector('body>:last-child').remove()
+    e.preventDefault() // Prevents user agent text undo
+  }
+  if (e.key == ' ' && !window.panning) {
+    panning = true
+    body_rect = document.body.getBoundingClientRect()
+
+    if (dragstart) {
+        window.last_elem.remove()
+    }
     e.preventDefault() // Prevents user agent text undo
   }
 })
