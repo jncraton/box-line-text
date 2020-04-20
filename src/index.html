@@ -80,13 +80,12 @@ document.addEventListener('mousemove', mousemove)
 document.addEventListener('touchmove', mousemove)
 
 function mouseup(e) {
-  if (window.erasing) {
+  if (window.erasing || !dragstart) {
     erasing = false
     return false
   }
-  e = e.touches ? e.changedTouches[0] : e
-  if (!dragstart) return false
 
+  e = e.touches ? e.changedTouches[0] : e
   createElement(dragstart, [e.clientX, e.clientY], false)
   dragstart = false
 }
