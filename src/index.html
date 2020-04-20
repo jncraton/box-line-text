@@ -52,6 +52,11 @@ function createElement(p1, p2, temporary=true) {
   text.focus()
 }
 
+function getPosition(e) {
+  e = e.touches ? e.touches[0] : e
+  return [e.clientX, e.clientY]
+}
+
 function mousedown(e) {
   if (e.shiftKey || e.target.tagName != 'P') {
     e.preventDefault() // Prevents content selection while dragging
@@ -60,8 +65,7 @@ function mousedown(e) {
       if (e.target != document.body) e.target.remove()
       erasing = true
     } else {
-      e = e.touches ? e.touches[0] : e
-      dragstart = [e.clientX, e.clientY]
+      dragstart = getPosition(e)
     }
   }
 }
@@ -73,8 +77,7 @@ function mousemove(e) {
     if (e.target != document.body) e.target.remove()
     return false
   }
-  e = e.touches ? e.touches[0] : e
-  if (window.dragstart) createElement([e.clientX, e.clientY], dragstart)
+  if (window.dragstart) createElement(getPosition(e), dragstart)
 }
 document.addEventListener('mousemove', mousemove)
 document.addEventListener('touchmove', mousemove)
@@ -85,8 +88,7 @@ function mouseup(e) {
     return false
   }
 
-  e = e.touches ? e.changedTouches[0] : e
-  createElement(dragstart, [e.clientX, e.clientY], false)
+  createElement(dragstart, getPosition(e), false)
   dragstart = false
 }
 document.addEventListener('mouseup', mouseup)
