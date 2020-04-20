@@ -52,6 +52,11 @@ function createElement(p1, p2, temporary=true) {
   text.focus()
 }
 
+function eraseElement(target) {
+  erasing = true
+  if (target != document.body) target.remove()
+}
+
 function getPosition(e) {
   e = e.touches ? e.touches[0] : e
   return [e.clientX, e.clientY]
@@ -61,34 +66,24 @@ function mousedown(e) {
   if (e.shiftKey || e.target.tagName != 'P') {
     e.preventDefault() // Prevents content selection while dragging
 
-    if (e.shiftKey) {
-      if (e.target != document.body) e.target.remove()
-      erasing = true
-    } else {
-      dragstart = getPosition(e)
-    }
+    if (e.shiftKey) eraseElement(e.target)
+    else dragstart = getPosition(e)
   }
 }
 document.addEventListener('mousedown', mousedown)
 document.addEventListener('touchstart', mousedown)
 
 function mousemove(e) {
-  if (window.erasing) {
-    if (e.target != document.body) e.target.remove()
-    return false
-  }
-  if (window.dragstart) createElement(getPosition(e), dragstart)
+  if (window.erasing) eraseElement(e.target)
+  else if (window.dragstart) createElement(getPosition(e), dragstart)
 }
 document.addEventListener('mousemove', mousemove)
 document.addEventListener('touchmove', mousemove)
 
 function mouseup(e) {
-  if (window.erasing || !dragstart) {
-    erasing = false
-    return false
-  }
+  if (window.erasing || !dragstart) erasing = false
+  else createElement(dragstart, getPosition(e), false)
 
-  createElement(dragstart, getPosition(e), false)
   dragstart = false
 }
 document.addEventListener('mouseup', mouseup)
