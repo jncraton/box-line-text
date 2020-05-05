@@ -83,6 +83,7 @@ function mouseup(e) {
   else createElement(dragstart, getPosition(e), false)
 
   dragstart = false
+  location.hash = btoa(document.body.innerHTML.trim())
 }
 document.addEventListener('mouseup', mouseup)
 document.addEventListener('touchend', mouseup)
@@ -93,6 +94,12 @@ document.addEventListener('keydown', function(e) {
     e.preventDefault() // Prevents user agent text undo
   }
 })
+
+document.addEventListener('keyup', () => {
+  location.hash = btoa(document.body.innerHTML.trim())
+})
+
+window.onload = () => document.body.innerHTML = atob(location.hash.substring(1))
 </script>
 </head>
 <body>
