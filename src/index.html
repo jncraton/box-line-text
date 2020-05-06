@@ -30,6 +30,7 @@ p {
   outline:none;
 }
 </style>
+<script src="lz-string.js"></script>
 <script>
 function createElement(p1, p2, temporary=true) {
   document.querySelectorAll('body>*:empty').forEach(e => e.remove())
@@ -83,7 +84,7 @@ function mouseup(e) {
   else createElement(dragstart, getPosition(e), false)
 
   dragstart = false
-  location.hash = btoa(document.body.innerHTML.trim())
+  save()
 }
 document.addEventListener('mouseup', mouseup)
 document.addEventListener('touchend', mouseup)
@@ -95,11 +96,12 @@ document.addEventListener('keydown', function(e) {
   }
 })
 
-document.addEventListener('keyup', () => {
-  location.hash = btoa(document.body.innerHTML.trim())
-})
+function save() {
+  location.hash = LZString.compressToEncodedURIComponent(document.body.innerHTML.trim())
+}
+document.addEventListener('keyup', save)
 
-window.onload = () => document.body.innerHTML = atob(location.hash.substring(1))
+window.onload = () => document.body.innerHTML = LZString.decompressFromEncodedURIComponent(location.hash.substring(1))
 </script>
 </head>
 <body>
