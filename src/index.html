@@ -30,9 +30,8 @@ p {
   outline:none;
 }
 </style>
-<script src="lz-string.js"></script>
 <script>
-function createElement(p1, p2, temporary=true) {
+function createElement(p1, p2, temporary=true, content="") {
   document.querySelectorAll('body>*:empty').forEach(e => e.remove())
 
   let e = document.createElement('section')
@@ -41,6 +40,7 @@ function createElement(p1, p2, temporary=true) {
 
   let text = document.createElement('p')
   text.contentEditable = 'true'
+  text.textContent=content
   if (!temporary) e.append(text)
 
   if (!e.style.width && !e.style.height) e = text
@@ -97,11 +97,30 @@ document.addEventListener('keydown', function(e) {
 })
 
 function save() {
-  location.hash = LZString.compressToEncodedURIComponent(document.body.innerHTML.trim())
+  a = Array.from(document.querySelectorAll("body > section, body > p")).reduce((s,e) => {
+    return s.concat([[
+      (parseInt(e.style.left) + 2) / 64, 
+      (parseInt(e.style.top) + 2) / 64,
+      ((parseInt(e.style.width) + 2) / 64 || 0),
+      ((parseInt(e.style.height) + 2) / 64 || 0),
+      encodeURIComponent(e.textContent).replace(/%[0-7][0-9A-F]/g, e => decodeURIComponent(e))
+    ]])
+  }, [])
+
+  location.hash = btoa(JSON.stringify(a))
 }
 document.addEventListener('keyup', save)
 
-window.onload = () => document.body.innerHTML = LZString.decompressFromEncodedURIComponent(location.hash.substring(1))
+window.onload = () => {
+  if (location.hash) {
+    JSON.parse(atob(location.hash.substring(1))).forEach(e => {
+      createElement(
+        [e[0] * 64 - 2, e[1] * 64 - 2],
+        [(e[2] + e[0]) * 64 - 2, (e[3] + e[1]) * 64 - 2],
+        false, decodeURIComponent(e[4]))
+    })
+  }
+}
 </script>
 </head>
 <body>
