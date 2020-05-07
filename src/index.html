@@ -93,6 +93,8 @@ document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key == 'z') {
     document.querySelector('body>:last-child').remove()
     e.preventDefault() // Prevents user agent text undo
+  } else if (e.key == 'Enter') {
+    e.preventDefault() // Disallow hard breaks in text
   }
 })
 
@@ -128,6 +130,8 @@ window.onload = () => {
     i+= text_length + 6
   }
 }
+
+document.addEventListener('paste', e => e.preventDefault())
 </script>
 </head>
 <body>
