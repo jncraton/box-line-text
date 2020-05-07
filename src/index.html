@@ -100,6 +100,7 @@ document.addEventListener('keydown', function(e) {
 
 b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
 posToB64 = x => b64[(parseInt(x) + 2) / 64 || 0]
+b64ToPos = c => b64.indexOf(c) * 64 - 2
 
 function save() {
   location.hash = Array.from(document.querySelectorAll("body > section, body > p")).reduce((s,e) => {
@@ -122,8 +123,8 @@ window.onload = () => {
     let text_length = b64.indexOf(e[i+4]) * 64 + b64.indexOf(e[i+5])
     let text = e.substring(i+6,i+6+text_length)
     createElement(
-      [b64.indexOf(e[i+0]) * 64 - 2, b64.indexOf(e[i+1]) * 64 - 2],
-      [(b64.indexOf(e[i+2]) + b64.indexOf(e[i+0])) * 64 - 2, (b64.indexOf(e[i+3]) + b64.indexOf(e[i+1])) * 64 - 2],
+      [b64ToPos(e[i+0]), b64ToPos(e[i+1])],
+      [b64ToPos(e[i+2]) + b64ToPos(e[i+0]), b64ToPos(e[i+3]) + b64ToPos(e[i+1])],
       false, text)
       
     i+= text_length + 6
