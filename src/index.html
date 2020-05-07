@@ -99,14 +99,13 @@ document.addEventListener('keydown', function(e) {
 })
 
 b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+posToB64 = x => b64[(parseInt(x) + 2) / 64 || 0]
 
 function save() {
   location.hash = Array.from(document.querySelectorAll("body > section, body > p")).reduce((s,e) => {
     return s += encodeURIComponent(
-      b64[(parseInt(e.style.left) + 2) / 64] +
-      b64[(parseInt(e.style.top) + 2) / 64] +
-      b64[((parseInt(e.style.width) + 2) / 64 || 0)] +
-      b64[((parseInt(e.style.height) + 2) / 64 || 0)] +
+      posToB64(e.style.left) + posToB64(e.style.top) +
+      posToB64(e.style.width) + posToB64(e.style.height) +
       b64[Math.floor(e.textContent.length / 64)] +
       b64[e.textContent.length % 64] +
       e.textContent)
