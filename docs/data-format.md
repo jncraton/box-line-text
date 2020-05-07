@@ -73,11 +73,19 @@ Let's break that down:
     - AC - There are 2 text characters
     - 😀 - The expected 2 characters
 
-Format Analysis
----------------
+Header Run Length Encoding
+--------------------------
 
-- Each element requires exactly 6 bytes of storage space in addition to its URL-encoded text.
-- We don't waste bytes base64 encoding text needlessly
-- We have at least a couple ("~" and perhaps ".") URL-safe characters not used for our base64 encoding so we could use those to pack in extra information.
+We have at least a couple ("~" and ".") URL-safe characters not used for our base64 encoding so we can use those to pack in extra information. Let's consider a few scenarios:
+
 - Floating text elements don't need their width and height, so they waste two bytes
 - Elements with no text waste two bytes encoding their text length
+
+We could use a more complex scheme to identify these types of element, or we could pack the redundant data more efficiently. The redundancy comes in the form of repeated 0 values ('A' in base64), so we use our two spare characters to implement run length encoding.
+
+Specifically, a '~' in a header represents two zero values, and a '.' in a header represents three zero values. This mean the the following elements now take less than 6 bytes for their headers:
+
+- Less than 64 bytes of floating text uses a 4 byte header
+- A horizontal line requires 4 bytes total
+- A vertical line requires 5 bytes total
+- An empty box requires 5 bytes total

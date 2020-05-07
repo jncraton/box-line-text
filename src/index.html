@@ -105,10 +105,12 @@ b64ToPos = c => b64.indexOf(c) * 64 - 2
 function save() {
   location.hash = Array.from(document.querySelectorAll("body>:not(:empty)")).reduce((s,e) => {
     return s += encodeURIComponent(
-      posToB64(e.style.left) + posToB64(e.style.top) +
+      (posToB64(e.style.left) + posToB64(e.style.top) +
       posToB64(e.style.width) + posToB64(e.style.height) +
       b64[Math.floor(e.textContent.length / 64)] +
-      b64[e.textContent.length % 64] +
+      b64[e.textContent.length % 64])
+        .replace('AAA','.')
+        .replace('AA', '~') +
       e.textContent)
   }, "1")
 }
@@ -118,12 +120,14 @@ window.onload = () => {
   let e = decodeURIComponent(location.hash.substring(2))
 
   while (e) {
-    let text_length = b64.indexOf(e[4]) * 64 + b64.indexOf(e[5])
+    let h = e.substring(0,6).replace('.','AAA').replace('~','AA')
+    let text_start = 12 - h.length
+    let text_length = b64.indexOf(h[4]) * 64 + b64.indexOf(h[5])
     createElement(
-      [b64ToPos(e[0]), b64ToPos(e[1])],
-      [b64ToPos(e[2]) + b64ToPos(e[0]), b64ToPos(e[3]) + b64ToPos(e[1])],
-      false, e.substring(6,6+text_length))
-    e = e.substring(text_length + 6)
+      [b64ToPos(h[0]), b64ToPos(h[1])],
+      [b64ToPos(h[2]) + b64ToPos(h[0]), b64ToPos(h[3]) + b64ToPos(h[1])],
+      false, e.substring(text_start,text_start+text_length))
+    e = e.substring(text_length + text_start)
   }
 }
 
