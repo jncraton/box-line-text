@@ -115,19 +115,15 @@ function save() {
 document.addEventListener('keyup', save)
 
 window.onload = () => {
-  let i = 0
+  let e = decodeURIComponent(location.hash.substring(2))
 
-  e = decodeURIComponent(location.hash.substring(2))
-
-  while (i < e.length) {
-    let text_length = b64.indexOf(e[i+4]) * 64 + b64.indexOf(e[i+5])
-    let text = e.substring(i+6,i+6+text_length)
+  while (e) {
+    let text_length = b64.indexOf(e[4]) * 64 + b64.indexOf(e[5])
     createElement(
-      [b64ToPos(e[i+0]), b64ToPos(e[i+1])],
-      [b64ToPos(e[i+2]) + b64ToPos(e[i+0]), b64ToPos(e[i+3]) + b64ToPos(e[i+1])],
-      false, text)
-      
-    i+= text_length + 6
+      [b64ToPos(e[0]), b64ToPos(e[1])],
+      [b64ToPos(e[2]) + b64ToPos(e[0]), b64ToPos(e[3]) + b64ToPos(e[1])],
+      false, e.substring(6,6+text_length))
+    e = e.substring(text_length + 6)
   }
 }
 
