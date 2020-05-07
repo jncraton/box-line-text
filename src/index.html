@@ -110,14 +110,14 @@ function save() {
       b64[Math.floor(e.textContent.length / 64)] +
       b64[e.textContent.length % 64] +
       e.textContent)
-  }, "")
+  }, "1")
 }
 document.addEventListener('keyup', save)
 
 window.onload = () => {
   let i = 0
 
-  e = decodeURIComponent(location.hash.substring(1))
+  e = decodeURIComponent(location.hash.substring(2))
 
   while (i < e.length) {
     let text_length = b64.indexOf(e[i+4]) * 64 + b64.indexOf(e[i+5])
