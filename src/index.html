@@ -96,29 +96,36 @@ document.addEventListener('keydown', function(e) {
   }
 })
 
-function save() {
-  a = Array.from(document.querySelectorAll("body > section, body > p")).reduce((s,e) => {
-    return s.concat([[
-      (parseInt(e.style.left) + 2) / 64, 
-      (parseInt(e.style.top) + 2) / 64,
-      ((parseInt(e.style.width) + 2) / 64 || 0),
-      ((parseInt(e.style.height) + 2) / 64 || 0),
-      encodeURIComponent(e.textContent).replace(/%[0-7][0-9A-F]/g, e => decodeURIComponent(e))
-    ]])
-  }, [])
+b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
 
-  location.hash = btoa(JSON.stringify(a))
+function save() {
+  location.hash = Array.from(document.querySelectorAll("body > section, body > p")).reduce((s,e) => {
+    return s += encodeURIComponent(
+      b64[(parseInt(e.style.left) + 2) / 64] +
+      b64[(parseInt(e.style.top) + 2) / 64] +
+      b64[((parseInt(e.style.width) + 2) / 64 || 0)] +
+      b64[((parseInt(e.style.height) + 2) / 64 || 0)] +
+      b64[Math.floor(e.textContent.length / 64)] +
+      b64[e.textContent.length % 64] +
+      e.textContent)
+  }, "")
 }
 document.addEventListener('keyup', save)
 
 window.onload = () => {
-  if (location.hash) {
-    JSON.parse(atob(location.hash.substring(1))).forEach(e => {
-      createElement(
-        [e[0] * 64 - 2, e[1] * 64 - 2],
-        [(e[2] + e[0]) * 64 - 2, (e[3] + e[1]) * 64 - 2],
-        false, decodeURIComponent(e[4]))
-    })
+  let i = 0
+
+  e = decodeURIComponent(location.hash.substring(1))
+
+  while (i < e.length) {
+    let text_length = b64.indexOf(e[i+4]) * 64 + b64.indexOf(e[i+5])
+    let text = e.substring(i+6,i+6+text_length)
+    createElement(
+      [b64.indexOf(e[i+0]) * 64 - 2, b64.indexOf(e[i+1]) * 64 - 2],
+      [(b64.indexOf(e[i+2]) + b64.indexOf(e[i+0])) * 64 - 2, (b64.indexOf(e[i+3]) + b64.indexOf(e[i+1])) * 64 - 2],
+      false, text)
+      
+    i+= text_length + 6
   }
 }
 </script>
