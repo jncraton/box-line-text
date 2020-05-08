@@ -120,8 +120,12 @@ window.onload = () => {
   let e = decodeURIComponent(location.hash.substring(2))
 
   while (e) {
-    let h = e.substring(0,6).replace('.','AAA').replace('~','AA')
-    let text_start = 12 - h.length
+    let h = ""
+    let text_start = 0
+    while (h.length < 6) {
+      h += e[text_start].replace('.','AAA').replace('~','AA')
+      text_start+=1
+    }
     let text_length = b64.indexOf(h[4]) * 64 + b64.indexOf(h[5])
     createElement(
       [b64ToPos(h[0]), b64ToPos(h[1])],
