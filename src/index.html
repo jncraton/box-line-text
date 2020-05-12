@@ -111,13 +111,13 @@ function save() {
       b64[e.textContent.length % 64])
         .replace('AAA','.')
         .replace('AA', '~') +
-      e.textContent)
+      e.textContent).replace(/%20/g,'+')
   }, "1")
 }
 document.addEventListener('keyup', save)
 
 window.onload = () => {
-  let e = decodeURIComponent(location.hash.substring(2))
+  let e = decodeURIComponent(location.hash.substring(2)).replace(/\+/g,' ')
 
   while (e) {
     let h = ""
