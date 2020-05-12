@@ -9,5 +9,9 @@ dist/index.html: src/index.html
 	# Remove blank lines
 	sed -i -e "/^\s*$$/d" $@		
 
+test: dist/index.html
+	python3 src/test.py
+
 clean:
 	rm -f dist/index.html
+	rm -f geckodriver*
