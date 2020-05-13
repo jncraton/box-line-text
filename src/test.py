@@ -12,7 +12,7 @@ with webdriver.Firefox(options=options) as browser:
     browser.get(f'file://{os.getcwd()}/dist/index.html')
 
     def create_contents():
-        content = '<section style="width: 126px; height: 190px; left: 62px; top: 62px;"><p contenteditable="true">Box</p></section><section style="width: 126px; left: 190px; top: 190px;"><p style="top: -66px;" contenteditable="true">Line</p></section><p style="left: 318px; top: 190px;" contenteditable="true">Text</p>'
+        content = '<section style="width: 126px; height: 190px; left: 62px; top: 62px;"><p contenteditable="true">Box</p></section><section style="width: 126px; left: 190px; top: 190px;"><p style="top: -66px;" contenteditable="true">Line</p></section><p style="left: 318px; top: 190px;" contenteditable="true">Text♥</p>'
 
         body = browser.find_element_by_css_selector('body')
 
@@ -45,6 +45,12 @@ with webdriver.Firefox(options=options) as browser:
             .send_keys("Text")\
             .perform()
         assert('Text' in browser.page_source)
+
+        # Create heart
+        webdriver.ActionChains(browser)\
+            .send_keys("♥")\
+            .perform()
+        assert('♥' in browser.page_source)
 
         # Assert that the DOM is as it should be
         assert(browser.find_element_by_css_selector('body').get_attribute('innerHTML').strip() == content)
