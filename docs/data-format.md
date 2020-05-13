@@ -93,3 +93,16 @@ Specifically, a '~' in a header represents two zero values, and a '.' in a heade
 - A horizontal line requires 4 bytes total
 - A vertical line requires 5 bytes total
 - An empty box requires 5 bytes total
+
+Alternatives 
+============
+
+In place of using an explicit text length, we could use record separators such as:
+
+    : V line
+    ; V line with text
+    _ H line
+    ~ H line with text
+    & Box
+    @ Box with text
+    = Text
