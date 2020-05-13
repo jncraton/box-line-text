@@ -76,12 +76,16 @@ Let's break that down:
 Header Run Length Encoding
 --------------------------
 
-We have at least a couple ("~" and ".") URL-safe characters not used for our base64 encoding so we can use those to pack in extra information. Let's consider a few scenarios:
+We have several fragment-safe characters that we haven't made use of. Here's the full set:
+
+    ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890?/:@-._~!$&'()*+,;=
+
+We can use those to pack in extra information. Let's consider a few scenarios:
 
 - Floating text elements don't need their width and height, so they waste two bytes
 - Elements with no text waste two bytes encoding their text length
 
-We could use a more complex scheme to identify these types of element, or we could pack the redundant data more efficiently. The redundancy comes in the form of repeated 0 values ('A' in base64), so we use our two spare characters to implement run length encoding.
+We could use a more complex scheme to identify these types of elements, or we could pack the redundant data more efficiently. The redundancy comes in the form of repeated 0 values ('A' in base64), so we use two of our spare characters to implement run length encoding.
 
 Specifically, a '~' in a header represents two zero values, and a '.' in a header represents three zero values. This mean the the following elements now take less than 6 bytes for their headers:
 
