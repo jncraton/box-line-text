@@ -102,8 +102,8 @@ document.addEventListener('keyup', function(e) {
   if (e.target.parentNode.clientHeight && e.target.clientHeight > e.target.parentNode.clientHeight) {
     e.target.parentNode.style.height = snap(e.target.clientHeight)
   }
-  // Grow width if the inner `p` has become wider than the box.
-  // This will generally only happen when individual words are wider than the box due to wrapping.
+  // Grow width if the inner `p` has become wider than the box
+  // This should only happen when individual words are wider than the box
   if (e.target.parentNode.clientWidth && e.target.clientWidth > e.target.parentNode.clientWidth) {
     e.target.parentNode.style.width = snap(e.target.clientWidth+64)
   }
