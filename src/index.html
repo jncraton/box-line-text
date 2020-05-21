@@ -97,7 +97,7 @@ document.addEventListener('keydown', function(e) {
 })
 
 document.addEventListener('keyup', function(e) {
-  if (e.target.clientHeight > e.target.parentNode.clientHeight) {
+  if (e.target.parentNode.clientHeight && e.target.clientHeight > e.target.parentNode.clientHeight) {
     e.target.parentNode.style.height = e.target.clientHeight - 2 + 'px'
   }
 })
