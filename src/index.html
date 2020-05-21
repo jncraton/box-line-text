@@ -31,11 +31,12 @@ p {
 }
 </style>
 <script>
+let snap = s => Math.round(s / 64) * 64 - 2 + 'px'
+
 function createElement(p1, p2, temporary=true, content="") {
   document.querySelectorAll('body>*:empty').forEach(e => e.remove())
 
   let e = document.createElement('section')
-  let snap = s => Math.round(s / 64) * 64 - 2 + 'px'
   ;[e.style.width, e.style.height] = p1.map((s, i) => snap(Math.abs(s - p2[i])))
 
   let text = document.createElement('p')
@@ -102,7 +103,19 @@ b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
 posToB64 = x => b64[(parseInt(x) + 2) / 64 || 0]
 b64ToPos = c => b64.indexOf(c) * 64 - 2
 
-function save() {
+function save(e) {
+  if (e) {
+    // Grow height if the inner `p` has become taller than the box.
+    if (e.target.parentNode.clientHeight && e.target.clientHeight > e.target.parentNode.clientHeight) {
+      e.target.parentNode.style.height = snap(e.target.clientHeight)
+    }
+    // Grow width if the inner `p` has become wider than the box
+    // This should only happen when individual words are wider than the box
+    if (e.target.parentNode.clientWidth && e.target.clientWidth > e.target.parentNode.clientWidth) {
+      e.target.parentNode.style.width = snap(e.target.clientWidth+64)
+    }
+  }
+
   location.hash = Array.from(document.querySelectorAll("body>:not(:empty)")).reduce((s,e) => {
     return s += encodeURIComponent(
       (posToB64(e.style.left) + posToB64(e.style.top) +
