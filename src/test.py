@@ -12,7 +12,7 @@ with webdriver.Firefox(options=options) as browser:
     browser.get(f'file://{os.getcwd()}/dist/index.html')
 
     def create_contents():
-        content = '<section style="width: 126px; height: 190px; left: 62px; top: 62px;"><p contenteditable="true">Box</p></section><section style="width: 126px; left: 190px; top: 190px;"><p style="top: -66px;" contenteditable="true">Line</p></section><p style="left: 318px; top: 190px;" contenteditable="true">Text♥</p>'
+        content = '<section style="width: 126px; height: 190px; left: 62px; top: 62px;"><p contenteditable="true">Box</p></section><section style="width: 126px; left: 190px; top: 190px;"><p style="top: -66px;" contenteditable="true">Line</p></section><p style="left: 318px; top: 190px;" contenteditable="true">Text♥</p><section style="width: 126px; height: 126px; left: 510px; top: 190px;"><p contenteditable="true">Small Box<br></p></section>'
 
         body = browser.find_element_by_css_selector('body')
 
@@ -52,18 +52,30 @@ with webdriver.Firefox(options=options) as browser:
             .perform()
         assert('♥' in browser.page_source)
 
+        # Create a small box that grows automatically
+        webdriver.ActionChains(browser)\
+            .move_by_offset(200, 0)\
+            .click_and_hold()\
+            .move_by_offset(64, 64)\
+            .release()\
+            .send_keys("Small Box")\
+            .perform()
+        assert('Small Box' in browser.page_source)
+
         # Assert that the DOM is as it should be
         assert(browser.find_element_by_css_selector('body').get_attribute('innerHTML').strip() == content)
 
     create_contents()
 
     # Delete all elements via Shift+click
-    for e in browser.find_elements_by_css_selector('body>*'):
-        webdriver.ActionChains(browser)\
-            .key_down(Keys.SHIFT)\
-            .click(e)\
-            .key_up(Keys.SHIFT)\
-            .perform()
+    # We may need to run this multiple time to remove elements hidden behind others
+    for _ in range(2):
+        for e in browser.find_elements_by_css_selector('body>*'):
+            webdriver.ActionChains(browser)\
+                .key_down(Keys.SHIFT)\
+                .click(e)\
+                .key_up(Keys.SHIFT)\
+                .perform()
     assert(browser.find_element_by_css_selector('body').get_attribute('innerHTML').strip() == '')
 
     create_contents()
