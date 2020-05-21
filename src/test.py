@@ -11,9 +11,13 @@ options.headless = True
 with webdriver.Firefox(options=options) as browser:
     browser.get(f'file://{os.getcwd()}/dist/index.html')
 
-    def create_contents():
-        content = '<section style="width: 126px; height: 190px; left: 62px; top: 62px;"><p contenteditable="true">Box</p></section><section style="width: 126px; left: 190px; top: 190px;"><p style="top: -66px;" contenteditable="true">Line</p></section><p style="left: 318px; top: 190px;" contenteditable="true">Text♥</p><section style="width: 126px; height: 126px; left: 510px; top: 190px;"><p contenteditable="true">Small Box<br></p></section>'
+    def assert_contents():
+        expected = '<section style="width: 126px; height: 190px; left: 62px; top: 62px;"><p contenteditable="true">Box</p></section><section style="width: 126px; left: 190px; top: 190px;"><p style="top: -66px;" contenteditable="true">Line</p></section><p style="left: 318px; top: 190px;" contenteditable="true">Text♥</p><section style="width: 126px; height: 126px; left: 510px; top: 190px;"><p contenteditable="true">Small Box</p></section>'
+        content = browser.find_element_by_css_selector('body').get_attribute('innerHTML')
+        content = content.strip().replace('<br>', '')
+        assert(expected == content)
 
+    def create_contents():
         body = browser.find_element_by_css_selector('body')
 
         # Create a box
@@ -62,8 +66,7 @@ with webdriver.Firefox(options=options) as browser:
             .perform()
         assert('Small Box' in browser.page_source)
 
-        # Assert that the DOM is as it should be
-        assert(browser.find_element_by_css_selector('body').get_attribute('innerHTML').strip() == content)
+        assert_contents()
 
     create_contents()
 
@@ -79,3 +82,10 @@ with webdriver.Firefox(options=options) as browser:
     assert(browser.find_element_by_css_selector('body').get_attribute('innerHTML').strip() == '')
 
     create_contents()
+
+    # Save the URL and browse to it
+    doc_url = browser.current_url
+    browser.close()
+    browser = webdriver.Firefox(options=options)
+    browser.get(doc_url)
+    assert_contents()
