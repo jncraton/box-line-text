@@ -129,31 +129,19 @@ function save(e) {
   location.hash = "#1" + Array.from(document.querySelectorAll("body>:not(:empty)")).map(e => {
     return encodeURIComponent(
       (posToB64(e.style.left) + posToB64(e.style.top) +
-      posToB64(e.style.width) + posToB64(e.style.height))
-        .replace('AAA','.')
-        .replace('AA', '~') +
+      posToB64(e.style.width) + posToB64(e.style.height)) +
       getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
   }).join(';')
 }
 document.addEventListener('keyup', save)
 
 window.onload = () => {
-  let e = decodeURIComponent(location.hash.substring(2).replace(/\$/g,'%0A')).replace(/\+/g,' ')
-
-  while (e) {
-    let h = ""
-    let text_start = 0
-    while (h.length < 6) {
-      h += e[text_start].replace('.','AAA').replace('~','AA')
-      text_start+=1
-    }
-    let text_length = b64.indexOf(h[4]) * 64 + b64.indexOf(h[5])
+  decodeURIComponent(location.hash.substring(2).replace(/\$/g,'%0A')).replace(/\+/g,' ').split(';').forEach(e => {
     createElement(
-      [b64ToPos(h[0]), b64ToPos(h[1])],
-      [b64ToPos(h[2]) + b64ToPos(h[0]), b64ToPos(h[3]) + b64ToPos(h[1])],
-      false, e.substring(text_start,text_start+text_length))
-    e = e.substring(text_length + text_start)
-  }
+      [b64ToPos(e[0]), b64ToPos(e[1])],
+      [b64ToPos(e[2]) + b64ToPos(e[0]), b64ToPos(e[3]) + b64ToPos(e[1])],
+      false, e.substring(4))
+  })
 }
 
 document.addEventListener('paste', e => e.preventDefault())
