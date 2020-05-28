@@ -137,10 +137,12 @@ document.addEventListener('keyup', save)
 
 window.onload = () => {
   decodeURIComponent(location.hash.substring(2).replace(/\$/g,'%0A')).replace(/\+/g,' ').split(';').forEach(e => {
-    createElement(
-      [b64ToPos(e[0]), b64ToPos(e[1])],
-      [b64ToPos(e[2]) + b64ToPos(e[0]), b64ToPos(e[3]) + b64ToPos(e[1])],
-      false, e.substring(4))
+    if (e) {
+      createElement(
+        [b64ToPos(e[0]), b64ToPos(e[1])],
+        [b64ToPos(e[2]) + b64ToPos(e[0]), b64ToPos(e[3]) + b64ToPos(e[1])],
+        false, e.substring(4))
+      }
   })
 }
 
