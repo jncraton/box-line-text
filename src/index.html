@@ -41,7 +41,7 @@ function createElement(p1, p2, temporary=true, content="") {
 
   let text = document.createElement('p')
   text.contentEditable = 'true'
-  text.textContent=content
+  text.innerHTML = content.replace(/\n/g, '<br>')
   if (!temporary) e.append(text)
 
   if (!e.style.width && !e.style.height) e = text
@@ -100,7 +100,7 @@ document.addEventListener('keydown', function(e) {
 function getTextContent(el) {
   // Convert <div> and <br> from HTML to newlines in plain text
   let html = el.innerHTML.replace(/(<div>|<br>)/g, "\n")
-                         .replace(/<.*>/g, "")
+                         .replace(/<.*?>/g, "")
                          .replace(/\n$/, "")
 
   // Decode HTML entities
@@ -131,7 +131,7 @@ function save(e) {
       (posToB64(e.style.left) + posToB64(e.style.top) +
       posToB64(e.style.width) + posToB64(e.style.height) +
       b64[Math.floor(e.textContent.length / 64)] +
-      b64[e.textContent.length % 64])
+      b64[getTextContent(e).length % 64])
         .replace('AAA','.')
         .replace('AA', '~') +
       getTextContent(e)).replace(/%(3F|2F|3A|40|21|24|26|27|28|29|2A|2B|2C|3B|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+')
