@@ -126,16 +126,14 @@ function save(e) {
     }
   }
 
-  location.hash = Array.from(document.querySelectorAll("body>:not(:empty)")).reduce((s,e) => {
-    return s += encodeURIComponent(
+  location.hash = "#1" + Array.from(document.querySelectorAll("body>:not(:empty)")).map(e => {
+    return encodeURIComponent(
       (posToB64(e.style.left) + posToB64(e.style.top) +
-      posToB64(e.style.width) + posToB64(e.style.height) +
-      b64[Math.floor(e.textContent.length / 64)] +
-      b64[getTextContent(e).length % 64])
+      posToB64(e.style.width) + posToB64(e.style.height))
         .replace('AAA','.')
         .replace('AA', '~') +
-      getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3B|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
-  }, "#1")
+      getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
+  }).join(';')
 }
 document.addEventListener('keyup', save)
 
