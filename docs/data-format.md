@@ -34,19 +34,18 @@ Format
 
 ### Element
 
-- Text length (12 bits, 2 b64 bytes) 
 - Left (6 bits, 1 b64 byte)
 - Top (6 bits, 1 b64 byte)
 - Width (6 bits, 1 b64 byte)
 - Height (6 bits, 1 b64 byte)
-- Text content ({text.length} bytes plus any URL encoding overhead)
+- Text content
 
 Example Encoding
 ----------------
 
 Let's take a look at a simple "Hello World" document. It contains a box with the word "Hello", a box with the word "World", and a floating smiling face emoji. It is encoded as:
 
-    1BBCBAFHelloEBCBAFWorldDCAAAC😀
+    1BBCBHello;EBCBWorld;DCAAAC😀;
 
 Let's break that down:
 
@@ -56,48 +55,31 @@ Let's break that down:
     - B - Top is position 1
     - C - Width is 2
     - B - Height is 1
-    - AF - There are 5 text characters
-    - Hello - The expected 5 characters
-- Start of element
+    - Hello - Text content
+- ; - Start of next element
     - E - Left is position 4
     - B - Top is position 1
     - C - Width is 2
     - B - Height is 1
     - AF - There are 5 text characters
-    - World - The expected 5 characters
-- Start of element
+    - World - Text content
+- ; - Start of next element
     - D - Left is position 3
     - C - Top is position 2
     - A - Width is 0
     - A - Height is 0
-    - AC - There are 2 text characters
-    - 😀 - The expected 2 characters
+    - 😀 - Text content
 
-Header Run Length Encoding
---------------------------
+Alternatives 
+============
 
 We have several fragment-safe characters that we haven't made use of. Here's the full set:
 
     ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890?/:@-._~!$&'()*+,;=
 
-We can use those to pack in extra information. Let's consider a few scenarios:
+We could use those to pack in extra information.
 
-- Floating text elements don't need their width and height, so they waste two bytes
-- Elements with no text waste two bytes encoding their text length
-
-We could use a more complex scheme to identify these types of elements, or we could pack the redundant data more efficiently. The redundancy comes in the form of repeated 0 values ('A' in base64), so we use two of our spare characters to implement run length encoding.
-
-Specifically, a '~' in a header represents two zero values, and a '.' in a header represents three zero values. This mean the the following elements now take less than 6 bytes for their headers:
-
-- Less than 64 bytes of floating text uses a 4 byte header
-- A horizontal line requires 4 bytes total
-- A vertical line requires 5 bytes total
-- An empty box requires 5 bytes total
-
-Alternatives 
-============
-
-In place of using an explicit text length, we could use record separators such as:
+In place of a single element separator, we could use record separators such as the following to save space.
 
     : V line
     ; V line with text
