@@ -134,13 +134,13 @@ function save(e) {
       b64[getTextContent(e).length % 64])
         .replace('AAA','.')
         .replace('AA', '~') +
-      getTextContent(e)).replace(/%(3F|2F|3A|40|21|24|26|27|28|29|2A|2B|2C|3B|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+')
+      getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3B|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
   }, "#1")
 }
 document.addEventListener('keyup', save)
 
 window.onload = () => {
-  let e = decodeURIComponent(location.hash.substring(2)).replace(/\+/g,' ')
+  let e = decodeURIComponent(location.hash.substring(2).replace(/\$/g,'%0A')).replace(/\+/g,' ')
 
   while (e) {
     let h = ""
