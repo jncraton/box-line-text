@@ -30,11 +30,14 @@ p {
   outline:none;
 }
 section.arrow {
-  border-width:0 2px 2px 0;
+  border-width:0 4px 4px 0;
   border-radius:0px;
   padding:5px;
 }
 section.right { transform:rotate(-45deg) }
+section.left { transform:rotate(135deg) }
+section.down { transform:rotate(45deg) }
+section.up { transform:rotate(-135deg) }
 </style>
 <script>
 let snap = s => Math.round(s / 64) * 64 - 2 + 'px'
@@ -100,6 +103,34 @@ document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key == 'z') {
     document.querySelector('body>:last-child').remove()
     e.preventDefault() // Prevents user agent text undo
+  } else if (e.key == 'ArrowRight') {
+    let arrow = document.createElement('section')
+    arrow.classList.add('arrow')
+    arrow.classList.add('right')
+    arrow.style.left = parseInt(e.target.parentNode.style.width) - 14 + 'px'
+    arrow.style.top = '-7px'
+    e.target.parentNode.append(arrow)
+  } else if (e.key == 'ArrowLeft') {
+    let arrow = document.createElement('section')
+    arrow.classList.add('arrow')
+    arrow.classList.add('left')
+    arrow.style.top = '-7px'
+    e.target.parentNode.append(arrow)
+  } else if (e.key == 'ArrowDown') {
+    let arrow = document.createElement('section')
+    arrow.classList.add('arrow')
+    arrow.classList.add('down')
+    arrow.style.top = parseInt(e.target.parentNode.style.height) - 14 + 'px'
+    arrow.style.left = '-7px'
+    e.target.parentNode.append(arrow)
+  } else if (e.key == 'ArrowUp') {
+    let arrow = document.createElement('section')
+    arrow.classList.add('arrow')
+    arrow.classList.add('up')
+    arrow.style.left = '-7px'
+    e.target.parentNode.append(arrow)
+  } else if (e.key == 'Enter') {
+    e.preventDefault() // Disallow hard breaks in text
   }
 })
 
