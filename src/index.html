@@ -94,10 +94,20 @@ document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key == 'z') {
     document.querySelector('body>:last-child').remove()
     e.preventDefault() // Prevents user agent text undo
-  } else if (e.key == 'Enter') {
-    e.preventDefault() // Disallow hard breaks in text
   }
 })
+
+function getTextContent(el) {
+  // Convert <div> and <br> from HTML to newlines in plain text
+  let html = el.innerHTML.replace(/(<div>|<br>)/g, "\n")
+                         .replace(/<.*>/g, "")
+                         .replace(/\n$/, "")
+
+  // Decode HTML entities
+  var tmp = document.createElement("textarea");
+  tmp.innerHTML = html
+  return tmp.textContent
+}
 
 b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
 posToB64 = x => b64[(parseInt(x) + 2) / 64 || 0]
@@ -124,7 +134,7 @@ function save(e) {
       b64[e.textContent.length % 64])
         .replace('AAA','.')
         .replace('AA', '~') +
-      e.textContent).replace(/%(3F|2F|3A|40|21|24|26|27|28|29|2A|2B|2C|3B|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+')
+      getTextContent(e)).replace(/%(3F|2F|3A|40|21|24|26|27|28|29|2A|2B|2C|3B|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+')
   }, "1")
 }
 document.addEventListener('keyup', save)
