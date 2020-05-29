@@ -104,20 +104,14 @@ document.addEventListener('keydown', function(e) {
     document.querySelector('body>:last-child').remove()
     e.preventDefault() // Prevents user agent text undo
   } else if (e.key.substring(0,5) == 'Arrow') {
-    // Test if we are a line
-    if (!e.target.parentNode.style.height != !e.target.parentNode.style.width) {
+    if ((!e.target.parentNode.style.height && 
+        (e.key == 'ArrowLeft' || e.key == 'ArrowRight')) || 
+        (!e.target.parentNode.style.width &&
+        (e.key == 'ArrowUp' || e.key == 'ArrowDown'))) {
       let arrow = document.createElement('section')
       arrow.classList.add('arrow')
       arrow.classList.add(e.key.substring(5).toLowerCase())
-      if (!e.target.parentNode.style.height) {
-        if (e.key == 'ArrowLeft' || e.key == 'ArrowRight') {
-          e.target.parentNode.append(arrow)
-        }
-      } else if (!e.target.parentNode.style.width) {
-        if (e.key == 'ArrowUp' || e.key == 'ArrowDown') {
-          e.target.parentNode.append(arrow)
-        }
-      }
+      e.target.parentNode.append(arrow)
     }
   } else if (e.key == 'Enter') {
     e.preventDefault() // Disallow hard breaks in text
