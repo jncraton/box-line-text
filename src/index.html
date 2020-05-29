@@ -144,7 +144,7 @@ function getTextContent(el) {
 
 b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_?/:@.~!$&'()*+,;="
 posToB64 = x => b64[(parseInt(x) + 2) / 64 || 0]
-b64ToPos = c => b64.indexOf(c) * 64 - 2
+b64ToPos = c => (b64.indexOf(c) < 64) ? b64.indexOf(c) * 64 - 2 : 0
 
 function save(e) {
   if (e) {
