@@ -99,6 +99,13 @@ function mouseup(e) {
 document.addEventListener('mouseup', mouseup)
 document.addEventListener('touchend', mouseup)
 
+function addArrow(el, dir) {
+  let arrow = document.createElement('section')
+  arrow.classList.add('arrow')
+  arrow.classList.add(dir)
+  el.append(arrow)
+}
+
 document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key == 'z') {
     document.querySelector('body>:last-child').remove()
@@ -108,10 +115,7 @@ document.addEventListener('keydown', function(e) {
         (e.key == 'ArrowLeft' || e.key == 'ArrowRight')) || 
         (!e.target.parentNode.style.width &&
         (e.key == 'ArrowUp' || e.key == 'ArrowDown'))) {
-      let arrow = document.createElement('section')
-      arrow.classList.add('arrow')
-      arrow.classList.add(e.key.substring(5).toLowerCase())
-      e.target.parentNode.append(arrow)
+        addArrow(e.target.parentNode, e.key.substring(5).toLowerCase())
     }
   } else if (e.key == 'Enter') {
     e.preventDefault() // Disallow hard breaks in text
