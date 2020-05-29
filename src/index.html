@@ -103,31 +103,19 @@ document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key == 'z') {
     document.querySelector('body>:last-child').remove()
     e.preventDefault() // Prevents user agent text undo
-  } else if (e.key == 'ArrowRight') {
+  } else if (e.key.substring(0,5) == 'Arrow') {
     let arrow = document.createElement('section')
     arrow.classList.add('arrow')
-    arrow.classList.add('right')
-    arrow.style.left = parseInt(e.target.parentNode.style.width) - 14 + 'px'
-    arrow.style.top = '-7px'
-    e.target.parentNode.append(arrow)
-  } else if (e.key == 'ArrowLeft') {
-    let arrow = document.createElement('section')
-    arrow.classList.add('arrow')
-    arrow.classList.add('left')
-    arrow.style.top = '-7px'
-    e.target.parentNode.append(arrow)
-  } else if (e.key == 'ArrowDown') {
-    let arrow = document.createElement('section')
-    arrow.classList.add('arrow')
-    arrow.classList.add('down')
-    arrow.style.top = parseInt(e.target.parentNode.style.height) - 14 + 'px'
-    arrow.style.left = '-7px'
-    e.target.parentNode.append(arrow)
-  } else if (e.key == 'ArrowUp') {
-    let arrow = document.createElement('section')
-    arrow.classList.add('arrow')
-    arrow.classList.add('up')
-    arrow.style.left = '-7px'
+    arrow.classList.add(e.key.substring(5).toLowerCase())
+    if (e.key == 'ArrowLeft' || e.key == 'ArrowRight') {
+      arrow.style.top = '-7px'
+      if (e.key == 'ArrowRight')
+        arrow.style.left = parseInt(e.target.parentNode.style.width) - 14 + 'px'
+    } else {
+      arrow.style.left = '-7px'
+      if (e.key == 'ArrowDown')
+        arrow.style.top = parseInt(e.target.parentNode.style.height) - 14 + 'px'
+    }
     e.target.parentNode.append(arrow)
   } else if (e.key == 'Enter') {
     e.preventDefault() // Disallow hard breaks in text
