@@ -142,7 +142,7 @@ function getTextContent(el) {
   return tmp.textContent
 }
 
-b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_?/:@.~!$&'()*+,;="
 posToB64 = x => b64[(parseInt(x) + 2) / 64 || 0]
 b64ToPos = c => b64.indexOf(c) * 64 - 2
 
@@ -160,9 +160,15 @@ function save(e) {
   }
 
   location.hash = "#1" + Array.from(document.querySelectorAll("body>:not(:empty)")).map(e => {
+    let arrows = e.querySelector('.arrow') ? 
+                  64 + !!e.querySelector('.left,.up') +
+                  2 * !!e.querySelector('.right,.down') :
+                  0
+  
     return encodeURIComponent(
-      (posToB64(e.style.left) + posToB64(e.style.top) +
-      posToB64(e.style.width) + posToB64(e.style.height)) +
+      posToB64(e.style.left) + posToB64(e.style.top) +
+      (e.style.width ? posToB64(e.style.width) : b64[arrows]) + 
+      (e.style.height ? posToB64(e.style.height) : b64[arrows]) +
       getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
   }).join(';')
 }
