@@ -118,7 +118,7 @@ document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key == 'z') {
     document.querySelector('body>:last-child').remove()
     e.preventDefault() // Prevents user agent text undo
-  } else if (e.key.substring(0,5) == 'Arrow') {
+  } else if (e.key.substring(0,5) == 'Arrow' && !e.target.textContent) {
     if ((!e.target.parentNode.style.height && 
         (e.key == 'ArrowLeft' || e.key == 'ArrowRight')) || 
         (!e.target.parentNode.style.width &&
