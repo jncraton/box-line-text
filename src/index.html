@@ -58,7 +58,7 @@ function createElement(p1, p2, temporary=true, content="", line_params=0) {
     if (line_params & 0x01) addArrow(e, 'up')
     if (line_params & 0x02) addArrow(e, 'down')
   }
-  if (e.style.width && !e.style.heigh) {
+  if (e.style.width && !e.style.height) {
     text.style.top = '-66px'
     if (line_params & 0x01) addArrow(e, 'left')
     if (line_params & 0x02) addArrow(e, 'right')
