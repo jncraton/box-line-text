@@ -103,3 +103,4 @@ with webdriver.Firefox(options=options) as browser:
     browser = webdriver.Firefox(options=options)
     browser.get(doc_url)
     assert_contents()
+    browser.close()
