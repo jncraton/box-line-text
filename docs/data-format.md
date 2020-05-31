@@ -87,3 +87,13 @@ In place of a single element separator, we could use record separators such as t
     & Box
     @ Box with text
     = Text
+
+Possible Header
+---------------
+
+Assuming 80 usable characters:
+
+Bit - hasWidth
+Bit - hasHeight
+Quaternary Digit - Decoration [None, 1, 2, 3] (1=lower arrow, 2=upper arrow, 3=both)
+Quinary Digit - Color [Transparent, 1, 2, 3, 4]
