@@ -74,38 +74,27 @@ function eraseElement(target) {
   if (target != document.body) target.remove()
 }
 
-function getPosition(e) {
-  e = e.touches ? e.touches[0] : e
-  return [e.clientX, e.clientY]
-}
-
-function mousedown(e) {
+document.addEventListener('mousedown', e => {
   if (e.shiftKey || e.target.tagName != 'P') {
     e.preventDefault() // Prevents content selection while dragging
 
     if (e.shiftKey) eraseElement(e.target)
-    else dragstart = getPosition(e)
+    else dragstart = [e.clientX, e.clientY]
   }
-}
-document.addEventListener('mousedown', mousedown)
-document.addEventListener('touchstart', mousedown)
+})
 
-function mousemove(e) {
+document.addEventListener('mousemove', e => {
   if (window.erasing) eraseElement(e.target)
-  else if (window.dragstart) createElement(getPosition(e), dragstart)
-}
-document.addEventListener('mousemove', mousemove)
-document.addEventListener('touchmove', mousemove)
+  else if (window.dragstart) createElement([e.clientX, e.clientY], dragstart)
+})
 
-function mouseup(e) {
+document.addEventListener('mouseup', e => {
   if (window.erasing || !dragstart) erasing = false
-  else createElement(dragstart, getPosition(e), false)
+  else createElement(dragstart, [e.clientX, e.clientY], false)
 
   dragstart = false
   save()
-}
-document.addEventListener('mouseup', mouseup)
-document.addEventListener('touchend', mouseup)
+})
 
 function addArrow(el, dir) {
   let arrow = document.createElement('section')
