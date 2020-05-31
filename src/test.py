@@ -13,7 +13,7 @@ with webdriver.Firefox(options=options) as browser:
     browser.get(f'file://{os.getcwd()}/dist/index.html')
 
     def assert_contents():
-        expected = '<section style="width: 126px; height: 190px; left: 62px; top: 62px;"><p contenteditable="true">Box</p></section><section style="width: 126px; left: 190px; top: 190px;"><p style="top: -66px;" contenteditable="true">Line</p></section><p style="left: 318px; top: 190px;" contenteditable="true">Text♥</p><section style="width: 126px; height: 126px; left: 510px; top: 190px;"><p contenteditable="true">Small Box</p></section><section style="width: 126px; left: 638px; top: 382px;"><p style="top: -66px;" contenteditable="true">Left</p><section class="arrow left"></section></section>'
+        expected = '<section style="width: 126px; height: 190px; left: 62px; top: 62px;"><p contenteditable="true">Box</p></section><section style="width: 126px; left: 190px; top: 190px;"><p style="top: -66px;" contenteditable="true">Line</p></section><p style="left: 318px; top: 190px;" contenteditable="true">Text♥</p><section style="width: 126px; height: 126px; left: 510px; top: 190px;"><p contenteditable="true">Small Box</p></section><section style="width: 126px; left: 638px; top: 382px;"><p style="top: -66px;" contenteditable="true">Left</p><arrow class="left"></arrow></section>'
         content = browser.find_element_by_css_selector('body').get_attribute('innerHTML')
         content = content.strip().replace('<br>', '')
         if expected != content:
