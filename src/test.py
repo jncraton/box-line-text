@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 import os
+import difflib
 
 options = Options()
 options.headless = True
@@ -12,10 +13,13 @@ with webdriver.Firefox(options=options) as browser:
     browser.get(f'file://{os.getcwd()}/dist/index.html')
 
     def assert_contents():
-        expected = '<section style="width: 126px; height: 190px; left: 62px; top: 62px;"><p contenteditable="true">Box</p></section><section style="width: 126px; left: 190px; top: 190px;"><p style="top: -66px;" contenteditable="true">Line</p></section><p style="left: 318px; top: 190px;" contenteditable="true">Text♥</p><section style="width: 126px; height: 126px; left: 510px; top: 190px;"><p contenteditable="true">Small Box</p></section>'
+        expected = '<section style="width: 126px; height: 190px; left: 62px; top: 62px;"><p contenteditable="true">Box</p></section><section style="width: 126px; left: 190px; top: 190px;"><p style="top: -66px;" contenteditable="true">Line</p></section><p style="left: 318px; top: 190px;" contenteditable="true">Text♥</p><section style="width: 126px; height: 126px; left: 510px; top: 190px;"><p contenteditable="true">Small Box</p></section><section style="width: 126px; left: 638px; top: 382px;"><p style="top: -66px;" contenteditable="true">Left</p><section class="arrow left"></section></section>'
         content = browser.find_element_by_css_selector('body').get_attribute('innerHTML')
         content = content.strip().replace('<br>', '')
-        assert(expected == content)
+        if expected != content:
+            for diff in difflib.ndiff(expected.replace('<', '\n<').splitlines(), content.replace('<', '\n<').splitlines()):
+                print(diff)
+            raise AssertionError
 
     def create_contents():
         body = browser.find_element_by_css_selector('body')
@@ -65,6 +69,16 @@ with webdriver.Firefox(options=options) as browser:
             .send_keys("Small Box")\
             .perform()
         assert('Small Box' in browser.page_source)
+
+        # Create a line with arrows
+        webdriver.ActionChains(browser)\
+            .move_by_offset(100, 100)\
+            .click_and_hold()\
+            .move_by_offset(100, 0)\
+            .release()\
+            .send_keys(Keys.LEFT, "Left")\
+            .perform()
+        assert('Left' in browser.page_source)
 
         assert_contents()
 
