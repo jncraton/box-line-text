@@ -45,29 +45,28 @@ Example Encoding
 
 Let's take a look at a simple "Hello World" document. It contains a box with the word "Hello", a box with the word "World", and a floating smiling face emoji. It is encoded as:
 
-    1BBCBHello;EBCBWorld;DCAAAC😀;
+    11121Hello;4121World;3200😀
 
 Let's break that down:
 
 - 1 - Format version 1
 - Start of element
-    - B - Left is position 1
-    - B - Top is position 1
-    - C - Width is 2
-    - B - Height is 1
+    - 1 - Left is position 1
+    - 1 - Top is position 1
+    - 2 - Width is 2
+    - 1 - Height is 1
     - Hello - Text content
 - ; - Start of next element
-    - E - Left is position 4
-    - B - Top is position 1
-    - C - Width is 2
-    - B - Height is 1
-    - AF - There are 5 text characters
+    - 4 - Left is position 4
+    - 1 - Top is position 1
+    - 2 - Width is 2
+    - 1 - Height is 1
     - World - Text content
 - ; - Start of next element
-    - D - Left is position 3
-    - C - Top is position 2
-    - A - Width is 0
-    - A - Height is 0
+    - 3 - Left is position 3
+    - 2 - Top is position 2
+    - 0 - Width is 0
+    - 0 - Height is 0
     - 😀 - Text content
 
 Alternatives 
