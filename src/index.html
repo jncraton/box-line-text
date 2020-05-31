@@ -142,9 +142,9 @@ function getTextContent(el) {
   return tmp.textContent
 }
 
-b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_?/:@.~!$&'()*+,;="
-posToB64 = x => b64[(parseInt(x) + 2) / 64 || 0]
-b64ToPos = c => (b64.indexOf(c) < 64) ? b64.indexOf(c) * 64 - 2 : 0
+chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_?/:@.~!$&'()*+,;="
+posToChar = x => chars[(parseInt(x) + 2) / 64 || 0]
+charToPos = c => (chars.indexOf(c) < 64) ? chars.indexOf(c) * 64 - 2 : 0
 
 function save(e) {
   if (e) {
@@ -166,9 +166,9 @@ function save(e) {
                   0
   
     return encodeURIComponent(
-      posToB64(e.style.left) + posToB64(e.style.top) +
-      (e.style.width ? posToB64(e.style.width) : b64[arrows]) + 
-      (e.style.height ? posToB64(e.style.height) : b64[arrows]) +
+      posToChar(e.style.left) + posToChar(e.style.top) +
+      (e.style.width ? posToChar(e.style.width) : chars[arrows]) + 
+      (e.style.height ? posToChar(e.style.height) : chars[arrows]) +
       getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
   }).join(';')
 }
@@ -178,9 +178,9 @@ window.onload = () => {
   decodeURIComponent(location.hash.substring(2).replace(/\$/g,'%0A')).replace(/\+/g,' ').split(';').forEach(e => {
     if (e) {
       createElement(
-        [b64ToPos(e[0]), b64ToPos(e[1])],
-        [b64ToPos(e[2]) + b64ToPos(e[0]), b64ToPos(e[3]) + b64ToPos(e[1])],
-        false, e.substring(4), Math.max(0, b64.indexOf(e[2]) - 64) || Math.max(0, b64.indexOf(e[3]) - 64))
+        [charToPos(e[0]), charToPos(e[1])],
+        [charToPos(e[2]) + charToPos(e[0]), charToPos(e[3]) + charToPos(e[1])],
+        false, e.substring(4), Math.max(0, chars.indexOf(e[2]) - 64) || Math.max(0, chars.indexOf(e[3]) - 64))
       }
   })
 }
