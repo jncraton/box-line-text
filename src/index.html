@@ -40,7 +40,7 @@ section.down  { margin-left:-7px; bottom:0px; transform:rotate(45deg) }
 section.up    { margin-left:-7px; top:0px; transform:rotate(-135deg) }
 </style>
 <script>
-let snap = s => Math.round(s / 64) * 64 - 2 + 'px'
+let snap = s => Math.min(Math.round(s / 64), 60) * 64 - 2 + 'px'
 
 function createElement(p1, p2, temporary=true, content="", line_params=0) {
   document.querySelectorAll('body>*:empty').forEach(e => e.remove())
