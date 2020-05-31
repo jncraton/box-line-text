@@ -114,8 +114,6 @@ document.addEventListener('keydown', function(e) {
         (e.key == 'ArrowUp' || e.key == 'ArrowDown'))) {
         addArrow(e.target.parentNode, e.key.substring(5).toLowerCase())
     }
-  } else if (e.key == 'Enter') {
-    e.preventDefault() // Disallow hard breaks in text
   }
 })
 
@@ -164,7 +162,8 @@ function save(e) {
 document.addEventListener('keyup', save)
 
 window.onload = () => {
-  decodeURIComponent(location.hash.substring(2).replace(/\$/g,'%0A')).replace(/\+/g,' ').split(';').forEach(e => {
+  location.hash.substring(2).split(';').forEach(e => {
+    e = decodeURIComponent(e.replace(/\$/g,'%0A').replace(/\+/g,' '))
     if (e) {
       createElement(
         [charToPos(e[0]), charToPos(e[1])],
