@@ -38,10 +38,10 @@ arrow.right { margin-top:-7px;  right:0px; transform:rotate(-45deg) }
 arrow.left  { margin-top:-7px;  left:0px; transform:rotate(135deg) }
 arrow.down  { margin-left:-7px; bottom:0px; transform:rotate(45deg) }
 arrow.up    { margin-left:-7px; top:0px; transform:rotate(-135deg) }
-[data-color="0"] { color: hsl(0  ,0% ,25%); }
-[data-color="1"] { color: hsl(0  ,75%,25%); background-color: hsl(0,75%,90%); }
-[data-color="2"] { color: hsl(120,75%,25%); background-color: hsl(120,75%,90%); }
-[data-color="3"] { color: hsl(240,75%,25%); background-color: hsl(240,75%,90%); }
+[data-decoration="0"] { color: hsl(0  ,0% ,25%); }
+[data-decoration="1"] { color: hsl(0  ,75%,25%); background-color: hsl(0,75%,90%); }
+[data-decoration="2"] { color: hsl(120,75%,25%); background-color: hsl(120,75%,90%); }
+[data-decoration="3"] { color: hsl(240,75%,25%); background-color: hsl(240,75%,90%); }
 </style>
 <script>
 let snap = s => Math.min(Math.round(s / 64), 60) * 64 - 2 + 'px'
@@ -117,7 +117,7 @@ document.addEventListener('keydown', function(e) {
         (e.key == 'ArrowUp' || e.key == 'ArrowDown'))) {
         addArrow(e.target.parentNode, e.key.substring(5).toLowerCase())
     } else {
-      e.target.parentNode.dataset.color = (parseInt(e.target.parentNode.dataset.color || 0) + 1) % 4
+      e.target.parentNode.dataset.decoration = (parseInt(e.target.parentNode.dataset.color || 0) + 1) % 4
     }
   }
 })
@@ -140,15 +140,15 @@ charToPos = c => (chars.indexOf(c) < 64) ? chars.indexOf(c) * 64 - 2 : 0
 
 function save() {
   location.hash = "#1" + Array.from(document.querySelectorAll("body>:not(:empty)")).map(e => {
-    let arrows = e.querySelector('arrow') ? 
-                  64 + !!e.querySelector('.left,.up') +
-                  2 * !!e.querySelector('.right,.down') :
-                  0
+    let header = 8 * !!e.style.width + 
+                 4 * !!e.style.height +
+                 (e.dataset.decoration || 0)
   
     return encodeURIComponent(
+      chars[header] + 
       posToChar(e.style.left) + posToChar(e.style.top) +
-      (e.style.width ? posToChar(e.style.width) : chars[arrows]) + 
-      (e.style.height ? posToChar(e.style.height) : chars[arrows]) +
+      (e.style.width ? posToChar(e.style.width) : '') +
+      (e.style.height ? posToChar(e.style.height) : '') +
       getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
   }).join(';')
 }
@@ -170,10 +170,14 @@ window.onload = () => {
   location.hash.substring(2).split(';').forEach(e => {
     e = decodeURIComponent(e.replace(/\$/g,'%0A').replace(/\+/g,' '))
     if (e) {
+      let width = (chars.indexOf(e[0]) & 0x8) ? charToPos(e[3]) : 0
+      let height = (chars.indexOf(e[0]) & 0x4) ? charToPos(e[3+!!width]) : 0
+      console.log(e[0], chars.indexOf(e[0]), width, height)
+    
       createElement(
-        [charToPos(e[0]), charToPos(e[1])],
-        [charToPos(e[2]) + charToPos(e[0]), charToPos(e[3]) + charToPos(e[1])],
-        false, e.substring(4), Math.max(0, chars.indexOf(e[2]) - 64) || Math.max(0, chars.indexOf(e[3]) - 64))
+        [charToPos(e[1]), charToPos(e[2])],
+        [width + charToPos(e[1]), height + charToPos(e[2])],
+        false, e.substring(3+!!width+!!height), chars.indexOf(e[0]) & 0x3)
       }
   })
 }
