@@ -152,6 +152,7 @@ function save() {
       getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
   }).join(';')
 }
+
 document.addEventListener('keyup', e => {
   // Grow height if the inner `p` has become taller than the box.
   if (e.target.parentNode.clientHeight && e.target.clientHeight > e.target.parentNode.clientHeight) {
