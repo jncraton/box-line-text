@@ -93,7 +93,10 @@ Possible Header
 
 Assuming 80 usable characters:
 
-Bit - hasWidth
-Bit - hasHeight
-Quaternary Digit - Decoration [None, 1, 2, 3] (1=lower arrow, 2=upper arrow, 3=both)
-Quinary Digit - Color [Transparent, 1, 2, 3, 4]
+- 1 Bit - hasWidth
+- 1 Bit - hasHeight
+- 1 Quaternary Digit - Decoration [None, 1, 2, 3] (
+  - Box - 1=Color 1, 2=Color 2, 3=Color 3, 0=No color
+  - Line - 1=lower arrow, 2=upper arrow, 3=both, 0=No arrows
+  - Text - 1=Double size, 0=Plain
+- 1 Quinary Digit - Reserved for later use
