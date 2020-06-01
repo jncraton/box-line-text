@@ -138,19 +138,7 @@ chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_?/:@.~!
 posToChar = x => chars[(parseInt(x) + 2) / 64 || 0]
 charToPos = c => (chars.indexOf(c) < 64) ? chars.indexOf(c) * 64 - 2 : 0
 
-function save(e) {
-  if (e) {
-    // Grow height if the inner `p` has become taller than the box.
-    if (e.target.parentNode.clientHeight && e.target.clientHeight > e.target.parentNode.clientHeight) {
-      e.target.parentNode.style.height = snap(e.target.clientHeight)
-    }
-    // Grow width if the inner `p` has become wider than the box
-    // This should only happen when individual words are wider than the box
-    if (e.target.parentNode.clientWidth && e.target.clientWidth > e.target.parentNode.clientWidth) {
-      e.target.parentNode.style.width = snap(e.target.clientWidth+64)
-    }
-  }
-
+function save() {
   location.hash = "#1" + Array.from(document.querySelectorAll("body>:not(:empty)")).map(e => {
     let arrows = e.querySelector('arrow') ? 
                   64 + !!e.querySelector('.left,.up') +
@@ -164,7 +152,20 @@ function save(e) {
       getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
   }).join(';')
 }
-document.addEventListener('keyup', save)
+document.addEventListener('keyup', e => {
+  if (e) {
+    // Grow height if the inner `p` has become taller than the box.
+    if (e.target.parentNode.clientHeight && e.target.clientHeight > e.target.parentNode.clientHeight) {
+      e.target.parentNode.style.height = snap(e.target.clientHeight)
+    }
+    // Grow width if the inner `p` has become wider than the box
+    // This should only happen when individual words are wider than the box
+    if (e.target.parentNode.clientWidth && e.target.clientWidth > e.target.parentNode.clientWidth) {
+      e.target.parentNode.style.width = snap(e.target.clientWidth+64)
+    }
+  }
+  save()
+})
 
 window.onload = () => {
   location.hash.substring(2).split(';').forEach(e => {
