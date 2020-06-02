@@ -46,7 +46,7 @@ arrow.up    { margin-left:-7px; top:0px; transform:rotate(-135deg) }
 <script>
 let snap = s => Math.min(Math.round(s / 64), 60) * 64 - 2 + 'px'
 
-function createElement(p1, p2, temporary=true, content="", line_params=0) {
+function createElement(p1, p2, temporary=true, content="", decoration=0) {
   document.querySelectorAll('body>*:empty').forEach(e => e.remove())
 
   let e = document.createElement('section')
@@ -59,14 +59,15 @@ function createElement(p1, p2, temporary=true, content="", line_params=0) {
 
   if (!e.style.width && !e.style.height) e = text
   if (e.style.height && !e.style.width) {
-    if (line_params & 0x01) addArrow(e, 'up')
-    if (line_params & 0x02) addArrow(e, 'down')
+    if (decoration & 0x01) addArrow(e, 'up')
+    if (decoration & 0x02) addArrow(e, 'down')
   }
   if (e.style.width && !e.style.height) {
     text.style.top = '-66px'
-    if (line_params & 0x01) addArrow(e, 'left')
-    if (line_params & 0x02) addArrow(e, 'right')
+    if (decoration & 0x01) addArrow(e, 'left')
+    if (decoration & 0x02) addArrow(e, 'right')
   }
+  e.dataset.decoration = decoration
 
   ;[e.style.left, e.style.top] = p1.map((s, i) => snap(Math.min(s, p2[i])))
   document.body.append(e)
