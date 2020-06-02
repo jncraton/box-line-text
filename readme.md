@@ -17,7 +17,18 @@ Usage
 - Click and drag a straight line to make a line
 - Click and drag a diagonal line to make a box
 - Hold shift to use the mouse as an eraser
+- Share URLs with others so they can view your work
+
+<details>
+<summary>Advanced Usage</summary>
+
 - Press Ctrl-z to undo creating elements
+- Immediately after creating an element, you can use the arrow keys to cycle through a few basic styles:
+    - Boxes - Change background color
+    - Lines - Add arrows
+    - Floating text - Double text size
+
+</details>    
 
 This tool generally assumes that you are screencasting from a laptop or desktop, so it is optimized for using a mouse to create figures and a physical keyboard to create text. It has limited touch and pen support. There are much better tools available for that type of interface.
 
