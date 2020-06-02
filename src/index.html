@@ -46,6 +46,19 @@ arrow.up    { margin-left:-7px; top:0px; transform:rotate(-135deg) }
 <script>
 let snap = s => Math.min(Math.round(s / 64), 60) * 64 - 2 + 'px'
 
+function setDecoration(e, decoration) {
+  e.querySelectorAll('arrow').forEach(a => a.remove())
+  if (e.style.height && !e.style.width) {
+    if (decoration & 0x01) addArrow(e, 'up')
+    if (decoration & 0x02) addArrow(e, 'down')
+  }
+  if (e.style.width && !e.style.height) {
+    if (decoration & 0x01) addArrow(e, 'left')
+    if (decoration & 0x02) addArrow(e, 'right')
+  }
+  e.dataset.decoration = decoration
+}
+
 function createElement(p1, p2, temporary=true, content="", decoration=0) {
   document.querySelectorAll('body>*:empty').forEach(e => e.remove())
 
@@ -56,18 +69,10 @@ function createElement(p1, p2, temporary=true, content="", decoration=0) {
   text.contentEditable = 'true'
   text.innerHTML = content.replace(/\n/g, '<br>')
   if (!temporary) e.append(text)
-
   if (!e.style.width && !e.style.height) e = text
-  if (e.style.height && !e.style.width) {
-    if (decoration & 0x01) addArrow(e, 'up')
-    if (decoration & 0x02) addArrow(e, 'down')
-  }
-  if (e.style.width && !e.style.height) {
-    text.style.top = '-66px'
-    if (decoration & 0x01) addArrow(e, 'left')
-    if (decoration & 0x02) addArrow(e, 'right')
-  }
-  e.dataset.decoration = decoration
+  if (e.style.width && !e.style.height) text.style.top = '-66px'
+
+  setDecoration(e, decoration)
 
   ;[e.style.left, e.style.top] = p1.map((s, i) => snap(Math.min(s, p2[i])))
   document.body.append(e)
@@ -112,14 +117,7 @@ document.addEventListener('keydown', function(e) {
     document.querySelector('body>:last-child').remove()
     e.preventDefault() // Prevents user agent text undo
   } else if (e.key.substring(0,5) == 'Arrow' && !e.target.textContent) {
-    if ((!e.target.parentNode.style.height && 
-        (e.key == 'ArrowLeft' || e.key == 'ArrowRight')) || 
-        (!e.target.parentNode.style.width &&
-        (e.key == 'ArrowUp' || e.key == 'ArrowDown'))) {
-        addArrow(e.target.parentNode, e.key.substring(5).toLowerCase())
-    } else {
-      e.target.parentNode.dataset.decoration = (parseInt(e.target.parentNode.dataset.decoration || 0) + 1) % 4
-    }
+    setDecoration(e.target.parentNode, (parseInt(e.target.parentNode.dataset.decoration || 0) + 1) % 4)
   }
 })
 
