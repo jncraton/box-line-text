@@ -56,7 +56,7 @@ function setDecoration(e, decoration) {
     if (decoration & 0x01) addArrow(e, 'right')
     if (decoration & 0x02) addArrow(e, 'left')
   }
-  e.dataset.decoration = decoration
+  if (decoration) e.dataset.decoration = decoration
 }
 
 function createElement(p1, p2, temporary=true, content="", decoration=0) {
