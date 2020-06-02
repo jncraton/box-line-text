@@ -27,6 +27,7 @@ Usage
     - Boxes - Change background color
     - Lines - Add arrows
     - Floating text - Double text size
+- You can also cycle styles for an element using PageUp/PageDown when your cursor is in the element text.
 
 </details>    
 
