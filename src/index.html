@@ -171,7 +171,6 @@ window.onload = () => {
     if (e) {
       let width = (chars.indexOf(e[0]) & 0x8) ? charToPos(e[3]) : 0
       let height = (chars.indexOf(e[0]) & 0x4) ? charToPos(e[3+!!width]) : 0
-      console.log(e[0], chars.indexOf(e[0]), width, height)
     
       createElement(
         [charToPos(e[1]), charToPos(e[2])],
