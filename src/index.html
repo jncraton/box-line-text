@@ -68,7 +68,7 @@ function createElement(p1, p2, temporary=true, content="", decoration=0) {
 
   let text = document.createElement('p')
   text.contentEditable = 'true'
-  text.innerHTML = content.replace(/\n/g, '<br>')
+  text.innerHTML = (new Option(content)).innerHTML.replace(/\n/g, '<br>')
   if (!temporary) e.append(text)
   if (!e.style.width && !e.style.height) e = text
   if (e.style.width && !e.style.height) text.style.top = '-66px'
