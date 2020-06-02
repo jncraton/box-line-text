@@ -31,7 +31,7 @@ Usage
 
 </details>    
 
-This tool generally assumes that you are screencasting from a laptop or desktop, so it is optimized for using a mouse to create figures and a physical keyboard to create text. It has limited touch and pen support. There are much better tools available for that type of interface.
+This tool assumes that you are screencasting from a laptop or desktop, so it is optimized for using a mouse to create figures and a physical keyboard to create text. It does not provide touch and pen support.
 
 FAQ
 ---
