@@ -117,7 +117,7 @@ document.addEventListener('keydown', function(e) {
         (e.key == 'ArrowUp' || e.key == 'ArrowDown'))) {
         addArrow(e.target.parentNode, e.key.substring(5).toLowerCase())
     } else {
-      e.target.parentNode.dataset.decoration = (parseInt(e.target.parentNode.dataset.color || 0) + 1) % 4
+      e.target.parentNode.dataset.decoration = (parseInt(e.target.parentNode.dataset.decoration || 0) + 1) % 4
     }
   }
 })
@@ -142,7 +142,7 @@ function save() {
   location.hash = "#1" + Array.from(document.querySelectorAll("body>:not(:empty)")).map(e => {
     let header = 8 * !!e.style.width + 
                  4 * !!e.style.height +
-                 (e.dataset.decoration || 0)
+                 (parseInt(e.dataset.decoration) || 0)
   
     return encodeURIComponent(
       chars[header] + 
