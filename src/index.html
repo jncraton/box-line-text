@@ -49,12 +49,12 @@ let snap = s => Math.min(Math.round(s / 64), 60) * 64 - 2 + 'px'
 function setDecoration(e, decoration) {
   e.querySelectorAll('arrow').forEach(a => a.remove())
   if (e.style.height && !e.style.width) {
-    if (decoration & 0x01) addArrow(e, 'up')
-    if (decoration & 0x02) addArrow(e, 'down')
+    if (decoration & 0x01) addArrow(e, 'down')
+    if (decoration & 0x02) addArrow(e, 'up')
   }
   if (e.style.width && !e.style.height) {
-    if (decoration & 0x01) addArrow(e, 'left')
-    if (decoration & 0x02) addArrow(e, 'right')
+    if (decoration & 0x01) addArrow(e, 'right')
+    if (decoration & 0x02) addArrow(e, 'left')
   }
   e.dataset.decoration = decoration
 }
