@@ -50,11 +50,11 @@ let snap = s => Math.min(Math.round(s / 64), 60) * 64 - 2 + 'px'
 function setDecoration(e, decoration) {
   e.querySelectorAll('arrow').forEach(a => a.remove())
   if (e.style.height && !e.style.width) {
-    if (decoration & 0x01) addArrow(e, 'down')
+    if (decoration == 1 || decoration == 2) addArrow(e, 'down')
     if (decoration & 0x02) addArrow(e, 'up')
   }
   if (e.style.width && !e.style.height) {
-    if (decoration & 0x01) addArrow(e, 'right')
+    if (decoration == 1 || decoration == 2) addArrow(e, 'right')
     if (decoration & 0x02) addArrow(e, 'left')
   }
   if (decoration || e.dataset.decoration) e.dataset.decoration = decoration
@@ -118,8 +118,9 @@ document.addEventListener('keydown', function(e) {
     document.querySelector('body>:last-child').remove()
     e.preventDefault() // Prevents user agent text undo
   } else if ((e.key.substring(0,5) == 'Arrow' && !e.target.textContent) || e.key.substring(0,4) == 'Page') {
+    let direction = (e.key.endsWith('Up') || e.key.endsWith('Left')) ? -1 : 1
     let el = e.target.parentNode == document.body ? e.target : e.target.parentNode
-    setDecoration(el, (parseInt(el.dataset.decoration || 0) + 1) % 4)
+    setDecoration(el, (parseInt(el.dataset.decoration || 0) + direction) % 4)
   }
 })
 
