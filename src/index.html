@@ -124,32 +124,40 @@ function addArrow(el, dir) {
 }
 
 document.addEventListener('mousedown', e => {
-  if (e.shiftKey || e.target.tagName != 'P') {
+  if (e.shiftKey || e.ctrlKey || e.target.tagName != 'P') {
     e.preventDefault() // Prevents content selection while dragging
 
     if (e.shiftKey) eraseElement(e.target)
     else dragstart = [e.clientX, e.clientY]
+    if (e.ctrlKey) {
+      moveTarget = e.target
+      if (e.target.tagName == 'P' && e.target.parentNode.tagName == 'SECTION') {
+        moveTarget = e.target.parentNode
+      }
+    }
   }
 })
 
 document.addEventListener('mousemove', e => {
-  // Handle panning
+  // Handle moving elements
   if (e.ctrlKey) {
     let x = Math.floor((dragstart[0] - e.clientX) / 64)
     let y = Math.floor((dragstart[1] - e.clientY) / 64)
     dragstart[0] -= x * 64
     dragstart[1] -= y * 64
-    let can_pan = true
-    document.querySelectorAll('body>*').forEach(e => {
+    let can_move = true
+    let elements = document.querySelectorAll('body>*')
+    if (window.moveTarget && window.moveTarget != document.body) elements = [window.moveTarget]
+    elements.forEach(e => {
       if (parseInt(e.style.left) - x*64 < 0 ||
           parseInt(e.style.top) -  y*64 < 0 ||
           parseInt(e.style.left) + e.style.width - x*64 > 3840 ||
           parseInt(e.style.top) + e.style.height - y*64 > 3840) {
-        can_pan = false
+        can_move = false
       }
     })
-    if (can_pan) {
-      document.querySelectorAll('body>*').forEach(e => {
+    if (can_move) {
+      elements.forEach(e => {
         e.style.left = parseInt(e.style.left) - x*64 + 'px'
         e.style.top = parseInt(e.style.top) - y*64 + 'px'
       })
@@ -163,6 +171,7 @@ document.addEventListener('mouseup', e => {
   else createElement(dragstart, [e.clientX, e.clientY], false)
 
   dragstart = false
+  window.move_target = null
   save()
 })
 
