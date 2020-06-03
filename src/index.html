@@ -47,19 +47,6 @@ p[data-decoration="1"],p[data-decoration="3"] { font-size:64px; line-height:128p
 <script>
 let snap = s => Math.min(Math.round(s / 64), 60) * 64 - 2 + 'px'
 
-function setDecoration(e, decoration) {
-  e.querySelectorAll('arrow').forEach(a => a.remove())
-  if (e.style.height && !e.style.width) {
-    if (decoration == 1 || decoration == 2) addArrow(e, 'down')
-    if (decoration & 0x02) addArrow(e, 'up')
-  }
-  if (e.style.width && !e.style.height) {
-    if (decoration == 1 || decoration == 2) addArrow(e, 'right')
-    if (decoration & 0x02) addArrow(e, 'left')
-  }
-  if (decoration || e.dataset.decoration) e.dataset.decoration = decoration
-}
-
 function createElement(p1, p2, temporary=true, content="", decoration=0) {
   document.querySelectorAll('body>*:empty').forEach(e => e.remove())
 
@@ -80,9 +67,59 @@ function createElement(p1, p2, temporary=true, content="", decoration=0) {
   text.focus()
 }
 
+chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_?/:@.~!$&'()*+,;="
+posToChar = x => chars[(parseInt(x) + 2) / 64 || 0]
+charToPos = c => (chars.indexOf(c) < 64) ? chars.indexOf(c) * 64 - 2 : 0
+
+function save() {
+  location.hash = "#1" + Array.from(document.querySelectorAll("body>:not(:empty)")).map(e => {
+    let header = 8 * !!e.style.width + 
+                 4 * !!e.style.height +
+                 (parseInt(e.dataset.decoration) || 0)
+  
+    return encodeURIComponent(
+      chars[header] + 
+      posToChar(e.style.left) + posToChar(e.style.top) +
+      (e.style.width ? posToChar(e.style.width) : '') +
+      (e.style.height ? posToChar(e.style.height) : '') +
+      getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
+  }).join(';')
+}
+
 function eraseElement(target) {
   erasing = true
   if (target != document.body) target.remove()
+}
+
+function getTextContent(el) {
+  // Convert <div> and <br> from HTML to newlines in plain text
+  let html = el.innerHTML.replace(/(<div>|<br>)/g, "\n")
+                         .replace(/<.*?>/g, "")
+                         .replace(/\n$/, "")
+
+  // Decode HTML entities
+  var tmp = document.createElement("textarea");
+  tmp.innerHTML = html
+  return tmp.textContent
+}
+
+function setDecoration(e, decoration) {
+  e.querySelectorAll('arrow').forEach(a => a.remove())
+  if (e.style.height && !e.style.width) {
+    if (decoration == 1 || decoration == 2) addArrow(e, 'down')
+    if (decoration & 0x02) addArrow(e, 'up')
+  }
+  if (e.style.width && !e.style.height) {
+    if (decoration == 1 || decoration == 2) addArrow(e, 'right')
+    if (decoration & 0x02) addArrow(e, 'left')
+  }
+  if (decoration || e.dataset.decoration) e.dataset.decoration = decoration
+}
+
+function addArrow(el, dir) {
+  let arrow = document.createElement('arrow')
+  arrow.classList.add(dir)
+  el.append(arrow)
 }
 
 document.addEventListener('mousedown', e => {
@@ -107,12 +144,6 @@ document.addEventListener('mouseup', e => {
   save()
 })
 
-function addArrow(el, dir) {
-  let arrow = document.createElement('arrow')
-  arrow.classList.add(dir)
-  el.append(arrow)
-}
-
 document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key == 'z') {
     document.querySelector('body>:last-child').remove()
@@ -123,37 +154,6 @@ document.addEventListener('keydown', function(e) {
     setDecoration(el, (parseInt(el.dataset.decoration || 0) + direction) % 4)
   }
 })
-
-function getTextContent(el) {
-  // Convert <div> and <br> from HTML to newlines in plain text
-  let html = el.innerHTML.replace(/(<div>|<br>)/g, "\n")
-                         .replace(/<.*?>/g, "")
-                         .replace(/\n$/, "")
-
-  // Decode HTML entities
-  var tmp = document.createElement("textarea");
-  tmp.innerHTML = html
-  return tmp.textContent
-}
-
-chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_?/:@.~!$&'()*+,;="
-posToChar = x => chars[(parseInt(x) + 2) / 64 || 0]
-charToPos = c => (chars.indexOf(c) < 64) ? chars.indexOf(c) * 64 - 2 : 0
-
-function save() {
-  location.hash = "#1" + Array.from(document.querySelectorAll("body>:not(:empty)")).map(e => {
-    let header = 8 * !!e.style.width + 
-                 4 * !!e.style.height +
-                 (parseInt(e.dataset.decoration) || 0)
-  
-    return encodeURIComponent(
-      chars[header] + 
-      posToChar(e.style.left) + posToChar(e.style.top) +
-      (e.style.width ? posToChar(e.style.width) : '') +
-      (e.style.height ? posToChar(e.style.height) : '') +
-      getTextContent(e)).replace(/%(3F|2F|3A|40|21|26|27|28|29|2A|2B|2C|3D)/g,c => decodeURIComponent(c)).replace(/%20/g, '+').replace(/%0A/g, '$')
-  }).join(';')
-}
 
 document.addEventListener('keyup', e => {
   // Grow height if the inner `p` has become taller than the box.
@@ -167,6 +167,8 @@ document.addEventListener('keyup', e => {
   }
   save()
 })
+
+document.addEventListener('paste', e => e.preventDefault())
 
 window.onload = () => {
   location.hash.substring(2).split(';').forEach(e => {
@@ -182,8 +184,6 @@ window.onload = () => {
       }
   })
 }
-
-document.addEventListener('paste', e => e.preventDefault())
 </script>
 </head>
 <body>
