@@ -17,7 +17,7 @@ Usage
 - Click and drag a straight line to make a line
 - Click and drag a diagonal line to make a box
 - Hold shift to use the mouse as an eraser
-- Share URLs with others so they can view your work
+- Share documents via URL
 
 <details>
 <summary>Advanced Usage</summary>
@@ -27,8 +27,6 @@ Usage
     - Boxes - Change background color
     - Lines - Add arrows
     - Floating text - Double text size
-- You can also cycle styles for an element using PageUp/PageDown when your cursor is in the element text.
-
 </details>    
 
 This tool assumes that you are screencasting from a laptop or desktop, so it is optimized for using a mouse to create figures and a physical keyboard to create text. It does not provide touch and pen support.
@@ -38,11 +36,7 @@ FAQ
 
 ### How do I save?
 
-There's no special feature for this. In most browsers, you can save the page as an HTML file. This should save your diagram and allow you to pick up where you left off. Screenshots and/or screen recordings may also be used to save your work.
-
-### How do I start over?
-
-The simplest way is to refresh the page (probably by pressing F5).
+Diagram state is stored in the URL, so any method of saving a URL can be used to save your work. In most browsers, you also can save the page as an HTML file. This should save your diagram and allow you to pick up where you left off. Screenshots and/or screen recordings may also be used to save your work.
 
 ### Is there a way to make the diagram larger or smaller?
 
