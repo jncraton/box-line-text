@@ -151,8 +151,8 @@ document.addEventListener('mousemove', e => {
     elements.forEach(e => {
       if (parseInt(e.style.left) - x*64 < 0 ||
           parseInt(e.style.top) -  y*64 < 0 ||
-          parseInt(e.style.left) + e.style.width - x*64 > 3840 ||
-          parseInt(e.style.top) + e.style.height - y*64 > 3840) {
+          parseInt(e.style.left) + parseInt(e.style.width) - x*64 > 3840 ||
+          parseInt(e.style.top) + parseInt(e.style.height) - y*64 > 3840) {
         can_move = false
       }
     })
