@@ -26,7 +26,7 @@ Usage
 - Immediately after creating an element, you can use the arrow keys to cycle through a few basic styles:
     - Boxes - Change background color
     - Lines - Add arrows
-    - Floating text - Double text size
+    - Floating text - Double size, Vertical-LR, Sideways-LR
 </details>    
 
 This tool assumes that you are screencasting from a laptop or desktop, so it is optimized for using a mouse to create figures and a physical keyboard to create text. It does not provide touch and pen support.

@@ -43,7 +43,9 @@ arrow.up    { margin-left:-7px; top:0px; transform:rotate(-135deg) }
 section[data-decoration="1"] { background-color: hsl(0,75%,90%); }
 section[data-decoration="2"] { background-color: hsl(120,75%,90%); }
 section[data-decoration="3"] { background-color: hsl(240,75%,90%); }
-p[data-decoration="1"],p[data-decoration="3"] { font-size:64px; line-height:128px }
+p[data-decoration="1"] { writing-mode:vertical-lr }
+p[data-decoration="2"] { writing-mode:sideways-lr }
+p[data-decoration="3"] { font-size:64px; line-height:128px }
 </style>
 <script>
 let snap = s => Math.min(Math.round(s / 64), 60) * 64 - 2 + 'px'
