@@ -23,9 +23,9 @@ Usage
 <summary>Advanced Usage</summary>
 
 - Press Ctrl-z to undo creating elements
-- Ctrl+Click and drag on an element will move it
-- Ctrl+Click and drag on the background will move all elements
-- Immediately after creating an element, you can use the arrow keys to cycle through a few basic styles:
+- Ctrl+Click and drag on an element to move it
+- Ctrl+Click and drag on the background to move all elements
+- Immediately after creating an element, use the arrow keys to cycle through a few basic styles:
     - Boxes - Background colors
     - Lines - Arrows
     - Floating text - Double size, quad size, vertical
