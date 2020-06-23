@@ -69,7 +69,7 @@ function createElement(p1, p2, temporary=true, content="", decoration=0) {
   text.focus()
 }
 
-chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_?/:@.~!$&'()*+,;="
+chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_?/:@.~!$&'()*+,="
 posToChar = x => chars[(parseInt(x) + 2) / 64 || 0]
 charToPos = c => (chars.indexOf(c) < 64) ? chars.indexOf(c) * 64 - 2 : 0
 
