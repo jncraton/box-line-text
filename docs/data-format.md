@@ -7,7 +7,6 @@ Specifications
 --------------
 
 - Must properly handle documents up 4k (3840px) in either portrait or landscape orientation. Specifically, documents up to 3840px by 3840px must be serialized correctly.
-- Must allow up to 4k characters per text element
 - Full Unicode text support
 
 Considerations
@@ -29,10 +28,30 @@ We need to ensure that these are properly encoded to be safe in a URL. We will s
 Format
 ------
 
-- Format version (1 byte)
-- List of elements
+- Global header terminated by semicolon
+    - This is currently unused, but could be used for future features such as global options and styles.
+- List of elements separated by semicolons
+- Example: `header;element;element;element`
 
 ### Element
+
+- Byte 0 - Element header
+    - 1 Bit - hasWidth
+    - 1 Bit - hasHeight
+    - 1 Quaternary Digit - Decoration [None, 1, 2, 3] (
+      - Box - 1=Color 1, 2=Color 2, 3=Color 3, 0=No color
+      - Line - 1=lower arrow, 2=upper arrow, 3=both, 0=No arrows
+      - Text - 1=Double size, 0=Plain
+    - 1 Quinary Digit - Reserved for later use
+- Byte 1 - Left position
+    - 1 base60 positive integer
+- Byte 2 - Top position
+    - 1 base 60 positive integer
+- Byte 3 - Element width if required by header
+    - 1 base 60 positive integer
+- Byte 4 - Element height if requred by header
+    - 1 base 60 positive integer
+- Bytes 5+ - Text content
 
 - Left (6 bits, 1 b64 byte)
 - Top (6 bits, 1 b64 byte)
@@ -43,60 +62,46 @@ Format
 Example Encoding
 ----------------
 
-Let's take a look at a simple "Hello World" document. It contains a box with the word "Hello", a box with the word "World", and a floating smiling face emoji. It is encoded as:
+Let's take a look at a simple "Hello World" document. It contains a box with the word "Hello", a box with the word "World", and a large floating smiling face emoji. It is encoded as:
 
-    11121Hello;4121World;3200😀
+    ;c1121Hello;f4121World;212😀
 
 Let's break that down:
 
-- 1 - Format version 1
-- Start of element
+- Empty global header
+- ; - Start of element
+    - c - Element with width, height, and decoration 0
     - 1 - Left is position 1
     - 1 - Top is position 1
     - 2 - Width is 2
     - 1 - Height is 1
     - Hello - Text content
-- ; - Start of next element
+- ; - Start of element
+    - f - Element with width, height, and decoration 1
     - 4 - Left is position 4
     - 1 - Top is position 1
     - 2 - Width is 2
     - 1 - Height is 1
     - World - Text content
-- ; - Start of next element
-    - 3 - Left is position 3
+- ; - Start of element
+    - 2 - Element with no width, no height, and decoration 3
+    - 1 - Left is position 1
     - 2 - Top is position 2
-    - 0 - Width is 0
-    - 0 - Height is 0
     - 😀 - Text content
 
-Alternatives 
-============
+Here is the full URL for this sample document:
 
-We have several fragment-safe characters that we haven't made use of. Here's the full set:
+https://develop--box-line-text.netlify.app/#c1121Hello;f4121World;212😀
+
+
+Notes
+=====
+
+Here's the full set of fragment-safe characters:
 
     ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890?/:@-._~!$&'()*+,;=
+We use these in the following order for up to base 80 encoding:
 
-We could use those to pack in extra information.
+```0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_?/:@.~!$&'()*+,=```
 
-In place of a single element separator, we could use record separators such as the following to save space.
-
-    : V line
-    ; V line with text
-    _ H line
-    ~ H line with text
-    & Box
-    @ Box with text
-    = Text
-
-Possible Header
----------------
-
-Assuming 80 usable characters:
-
-- 1 Bit - hasWidth
-- 1 Bit - hasHeight
-- 1 Quaternary Digit - Decoration [None, 1, 2, 3] (
-  - Box - 1=Color 1, 2=Color 2, 3=Color 3, 0=No color
-  - Line - 1=lower arrow, 2=upper arrow, 3=both, 0=No arrows
-  - Text - 1=Double size, 0=Plain
-- 1 Quinary Digit - Reserved for later use
+The semicolon is reserved for use as a record separator.
