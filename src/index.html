@@ -74,7 +74,7 @@ posToChar = x => chars[(parseInt(x) + 2) / 64 || 0]
 charToPos = c => (chars.indexOf(c) < 64) ? chars.indexOf(c) * 64 - 2 : 0
 
 function save() {
-  location.hash = "#" + Array.from(document.querySelectorAll("body>:not(:empty)")).map(e => {
+  location.hash = "#;" + Array.from(document.querySelectorAll("body>:not(:empty)")).map(e => {
     let header = 8 * !!e.style.width + 
                  4 * !!e.style.height +
                  (parseInt(e.dataset.decoration) || 0)
@@ -206,7 +206,7 @@ document.addEventListener('keyup', e => {
 document.addEventListener('paste', e => e.preventDefault())
 
 window.onload = () => {
-  location.hash.substring(1).split(';').forEach(e => {
+  location.hash.substring(1).split(';').slice(1).forEach(e => {
     e = decodeURIComponent(e.replace(/\$/g,'%0A').replace(/\+/g,' '))
     if (e) {
       let width = (chars.indexOf(e[0]) & 0x8) ? charToPos(e[3]) : 0
