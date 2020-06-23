@@ -91,7 +91,7 @@ Let's break that down:
 
 Here is the full URL for this sample document:
 
-https://develop--box-line-text.netlify.app/#c1121Hello;f4121World;212😀
+https://develop--box-line-text.netlify.app/#;c1121Hello;f4121World;212😀
 
 
 Notes
