@@ -59,7 +59,9 @@ function createElement(p1, p2, temporary=true, content="", decoration=0) {
   text.contentEditable = 'true'
   text.innerHTML = (new Option(content)).innerHTML.replace(/\n/g, '<br>')
   if (!temporary) e.append(text)
+  // Boxes with no width or height become text elements
   if (!e.style.width && !e.style.height) e = text
+  // Move text above horizontal lines
   if (e.style.width && !e.style.height) text.style.top = '-66px'
 
   setDecoration(e, decoration)
