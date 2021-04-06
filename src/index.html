@@ -100,7 +100,7 @@ function getTextContent(el) {
                          .replace(/\n$/, "")
 
   // Decode HTML entities
-  var tmp = document.createElement("textarea");
+  var tmp = document.createElement("textarea")
   tmp.innerHTML = html
   return tmp.textContent
 }
