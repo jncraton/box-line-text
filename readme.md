@@ -2,7 +2,7 @@ Box Line Text
 =============
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/99b4904a-b8a1-42b7-8495-13215fb6ba7d/deploy-status)](https://app.netlify.com/sites/box-line-text/deploys)
-[![Build Status](https://travis-ci.org/jncraton/box-line-text.svg?branch=master)](https://travis-ci.org/jncraton/box-line-text)
+[![UI Test](https://github.com/jncraton/box-line-text/actions/workflows/test.yml/badge.svg)](https://github.com/jncraton/box-line-text/actions/workflows/test.yml)
 
 Box Line Text (BLT) is a simple virtual whiteboarding tool. It is minimalistic and contains no visible UI for a clean screencasting experience.
 
